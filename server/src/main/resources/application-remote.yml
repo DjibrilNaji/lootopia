@@ -1,0 +1,5 @@
+spring:
+  application:
+    name:server
+  datasource:
+    url: ${DATASOURCE_URL}
