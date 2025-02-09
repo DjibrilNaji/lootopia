@@ -27,7 +27,7 @@ jobs:
           DATABASE_SOURCE_URL: ${{ secrets.DATASOURCE_URL }}
         run: |
           cd server
-          mvn clean install
+          mvn clean install -D spring.profiles.active=remote -X
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
