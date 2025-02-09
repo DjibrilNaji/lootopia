@@ -3,3 +3,4 @@ spring:
     name:server
   datasource:
     url: ${DATASOURCE_URL}
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
