@@ -25,6 +25,8 @@ jobs:
       - name: Build with Maven
         env:
           DATASOURCE_URL: ${{ secrets.DATASOURCE_URL }}
+          SECURITY_NAME: ${{ secrets.SECURITY_NAME }}
+          SECURITY_PASSWORD: ${{ secrets.SECURITY_PASSWORD }}
         run: |
           cd server
           mvn clean install -D spring.profiles.active=remote -X
