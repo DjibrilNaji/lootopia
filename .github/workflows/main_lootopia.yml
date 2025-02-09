@@ -23,6 +23,8 @@ jobs:
           distribution: "microsoft"
         
       - name: Build with Maven
+        env:
+          DATABASE_SOURCE_URL: ${{ secrets.DATASOURCE_URL }}
         run: |
           cd server
           mvn clean install
