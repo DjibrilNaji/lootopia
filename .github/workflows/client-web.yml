@@ -3,6 +3,9 @@ on:
     branches:
       - feature/*
       - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 defaults:
@@ -21,6 +24,18 @@ jobs:
         run: npm ci
       - name: build
         run: npm run build
+
+  jest-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - name: npm install, ci
+        run: npm ci
+      - name: npm run test
+        run: npm run test
 
   cypress-test:
     runs-on: ubuntu-latest
@@ -42,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    needs: [lint-and-build, cypress-test]
+    needs: [lint-and-build, jest-test, cypress-test]
     steps:
       - uses: actions/checkout@v4
 
