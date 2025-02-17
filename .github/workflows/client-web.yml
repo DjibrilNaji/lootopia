@@ -25,14 +25,13 @@ jobs:
   cypress-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
         with:
-          node-version: lts/*
-      - name: npm install, ci
-        run: npm ci
-      - name: npm cy:run
-        run: npm run cy:run
+          build: npm run build
+          start: npm start
 
   build:
     runs-on: ubuntu-latest
