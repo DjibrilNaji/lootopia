@@ -31,6 +31,8 @@ jobs:
           node-version: lts/*
       - name: npm install, ci
         run: npm ci
+      - name: Build the server
+        run: npm run build
       - name: Start the server
         run: npm run start
       - name: npm cy:run
