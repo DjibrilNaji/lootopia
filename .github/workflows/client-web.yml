@@ -31,8 +31,8 @@ jobs:
           node-version: lts/*
       - name: npm install, ci
         run: npm ci
-      - name: npm test:e2e
-        run: npm run test:e2e
+      - name: npm cy:run
+        run: npm run cy:run
 
   build:
     runs-on: ubuntu-latest
