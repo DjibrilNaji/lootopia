@@ -34,7 +34,7 @@ jobs:
       - name: Build the server
         run: npm run build
       - name: Start the server
-        run: npm run start
+        run: npm run start &
       - name: npm cy:run
         run: npm run cy:run
 
