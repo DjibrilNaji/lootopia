@@ -34,8 +34,8 @@ jobs:
           node-version: lts/*
       - name: npm install, ci
         run: npm ci
-      - name: npm run test
-        run: npm run test
+      - name: npm run test:unit
+        run: npm run test:unit
 
   cypress-test:
     runs-on: ubuntu-latest
