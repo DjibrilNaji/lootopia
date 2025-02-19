@@ -1,0 +1,13 @@
+spring:
+  application:
+    name:server
+  datasource:
+    url: ${DATASOURCE_URL}
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  security:
+    user:
+      name: ${SECURITY_NAME}
+      password: ${SECURITY_PASSWORD}
+  session:
+    jdbc:
+      initialize-schema: always
