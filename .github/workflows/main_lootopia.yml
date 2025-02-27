@@ -29,6 +29,8 @@ jobs:
           DATASOURCE_URL: ${{ secrets.DATASOURCE_URL }}
           SECURITY_NAME: ${{ secrets.SECURITY_NAME }}
           SECURITY_PASSWORD: ${{ secrets.SECURITY_PASSWORD }}
+          MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
         run: |
           cd server
           mvn clean install -D spring.profiles.active=remote -X
