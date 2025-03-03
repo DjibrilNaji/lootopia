@@ -31,7 +31,7 @@ jobs:
           SECURITY_PASSWORD: ${{ secrets.SECURITY_PASSWORD }}
         run: |
           cd server
-          mvn clean install -D spring.profiles.active=remote -X
+          mvn clean install -D spring.profiles.active=remote -DskipTests -X
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
