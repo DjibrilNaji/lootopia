@@ -12,7 +12,8 @@
     "typecheck": "tsc",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
-    "test:unit": "jest"
+    "test:unit": "jest",
+    "prettier": "prettier --ignore-path .gitignore --write ."
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.3",

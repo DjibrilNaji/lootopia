@@ -1,58 +1,47 @@
-import { Book, Menu, Sunset, Trees, Zap } from "lucide-react";
+import { Book, Menu, Sunset, Trees, Zap } from "lucide-react"
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "../ui/accordion";
-import { Button } from "../ui/button";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion"
+import { Button } from "../ui/button"
 import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
-} from "../ui/navigation-menu";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "../ui/sheet"
+  NavigationMenuTrigger
+} from "../ui/navigation-menu"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet"
 
 interface MenuItem {
-  title: string;
-  url: string;
-  description?: string;
-  icon?: React.ReactNode;
-  items?: MenuItem[];
+  title: string
+  url: string
+  description?: string
+  icon?: React.ReactNode
+  items?: MenuItem[]
 }
 
 interface NavbarProps {
   logo?: {
-    url: string;
-    src: string;
-    alt: string;
-    title: string;
-  };
-  menu?: MenuItem[];
+    url: string
+    src: string
+    alt: string
+    title: string
+  }
+  menu?: MenuItem[]
   mobileExtraLinks?: {
-    name: string;
-    url: string;
-  }[];
+    name: string
+    url: string
+  }[]
   auth?: {
     login: {
-      text: string;
-      url: string;
-    };
+      text: string
+      url: string
+    }
     signup: {
-      text: string;
-      url: string;
-    };
-  };
+      text: string
+      url: string
+    }
+  }
 }
 
 const Navbar = ({
@@ -60,81 +49,81 @@ const Navbar = ({
     url: "#",
     src: "/img/tresor-removebg-preview.png",
     alt: "",
-    title: "LOOTOPIA",
+    title: "LOOTOPIA"
   },
   menu = [
-  { title: "Accueil", url: "#" },
-  {
-    title: "L'Expérience",
-    url: "#",
-    items: [
-      {
-        title: "Légendes & Quêtes",
-        description: "Explore des aventures épiques et des trésors cachés",
-        icon: <Book className="size-5 shrink-0" />,
-        url: "#",
-      },
-      {
-        title: "L'Univers de Lootopia",
-        description: "Un monde rempli de mystères et de défis à relever",
-        icon: <Trees className="size-5 shrink-0" />,
-        url: "#",
-      },
-      {
-        title: "Deviens un Aventurier",
-        description: "Inscris-toi et commence ta quête dès aujourd'hui",
-        icon: <Sunset className="size-5 shrink-0" />,
-        url: "#",
-      },
-      {
-        title: "Support & Aide",
-        description: "Besoin d’un indice ? Notre équipe est là pour t’aider",
-        icon: <Zap className="size-5 shrink-0" />,
-        url: "#",
-      },
-    ],
-  },
-  {
-    title: "Ressources",
-    url: "#",
-    items: [
-      {
-        title: "Guide du Chasseur",
-        description: "Toutes les règles et astuces pour réussir tes quêtes",
-        icon: <Zap className="size-5 shrink-0" />,
-        url: "#",
-      },
-      {
-        title: "Contact",
-        description: "Une question ? Une idée ? Échangeons ensemble !",
-        icon: <Sunset className="size-5 shrink-0" />,
-        url: "#",
-      },
-      {
-        title: "Statut des Quêtes",
-        description: "Suis l'évolution des défis et événements en cours",
-        icon: <Trees className="size-5 shrink-0" />,
-        url: "#",
-      },
-      {
-        title: "Conditions d'Utilisation",
-        description: "Les règles du jeu et notre engagement envers la communauté",
-        icon: <Book className="size-5 shrink-0" />,
-        url: "#",
-      },
-    ],
-  },
-],
+    { title: "Accueil", url: "#" },
+    {
+      title: "L'Expérience",
+      url: "#",
+      items: [
+        {
+          title: "Légendes & Quêtes",
+          description: "Explore des aventures épiques et des trésors cachés",
+          icon: <Book className="size-5 shrink-0" />,
+          url: "#"
+        },
+        {
+          title: "L'Univers de Lootopia",
+          description: "Un monde rempli de mystères et de défis à relever",
+          icon: <Trees className="size-5 shrink-0" />,
+          url: "#"
+        },
+        {
+          title: "Deviens un Aventurier",
+          description: "Inscris-toi et commence ta quête dès aujourd'hui",
+          icon: <Sunset className="size-5 shrink-0" />,
+          url: "#"
+        },
+        {
+          title: "Support & Aide",
+          description: "Besoin d’un indice ? Notre équipe est là pour t’aider",
+          icon: <Zap className="size-5 shrink-0" />,
+          url: "#"
+        }
+      ]
+    },
+    {
+      title: "Ressources",
+      url: "#",
+      items: [
+        {
+          title: "Guide du Chasseur",
+          description: "Toutes les règles et astuces pour réussir tes quêtes",
+          icon: <Zap className="size-5 shrink-0" />,
+          url: "#"
+        },
+        {
+          title: "Contact",
+          description: "Une question ? Une idée ? Échangeons ensemble !",
+          icon: <Sunset className="size-5 shrink-0" />,
+          url: "#"
+        },
+        {
+          title: "Statut des Quêtes",
+          description: "Suis l'évolution des défis et événements en cours",
+          icon: <Trees className="size-5 shrink-0" />,
+          url: "#"
+        },
+        {
+          title: "Conditions d'Utilisation",
+          description: "Les règles du jeu et notre engagement envers la communauté",
+          icon: <Book className="size-5 shrink-0" />,
+          url: "#"
+        }
+      ]
+    }
+  ],
   mobileExtraLinks = [
     { name: "Press", url: "#" },
     { name: "Contact", url: "#" },
     { name: "Imprint", url: "#" },
-    { name: "Sitemap", url: "#" },
+    { name: "Sitemap", url: "#" }
   ],
   auth = {
     login: { text: "Se connecter", url: "#" },
-    signup: { text: "S'inscrire", url: "#" },
-  },
+    signup: { text: "S'inscrire", url: "#" }
+  }
 }: NavbarProps) => {
   return (
     <section className="py-4 flex justify-center items-center ">
@@ -142,22 +131,20 @@ const Navbar = ({
         <nav className="hidden justify-between lg:flex">
           <div className="flex items-center gap-6">
             <a href={logo.url} className="flex items-center gap-2">
-              <img src={logo.src} className="w-8" alt={logo.alt} /> 
+              <img src={logo.src} className="w-8" alt={logo.alt} />
               <span className="text-lg font-semibold font-uniSansItalic">{logo.title}</span>
             </a>
             <div className="flex items-center">
               <NavigationMenu>
-                <NavigationMenuList>
-                  {menu.map((item) => renderMenuItem(item))}
-                </NavigationMenuList>
+                <NavigationMenuList>{menu.map((item) => renderMenuItem(item))}</NavigationMenuList>
               </NavigationMenu>
             </div>
           </div>
           <div className="flex gap-2">
-        <button className="w-full text-black hover:text-gray-400   focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2  sm:w-auto">
+            <button className="w-full text-black hover:text-gray-400   focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2  sm:w-auto">
               <a href={auth.login.url}>{auth.login.text}</a>
             </button>
-           <button className="w-full text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900 sm:w-auto">
+            <button className="w-full text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900 sm:w-auto">
               <a href={auth.signup.url}>{auth.signup.text}</a>
             </button>
           </div>
@@ -179,18 +166,12 @@ const Navbar = ({
                   <SheetTitle>
                     <a href={logo.url} className="flex items-center gap-2">
                       <img src={logo.src} className="w-8" alt={logo.alt} />
-                      <span className="text-lg font-semibold">
-                        {logo.title}
-                      </span>
+                      <span className="text-lg font-semibold">{logo.title}</span>
                     </a>
                   </SheetTitle>
                 </SheetHeader>
                 <div className="my-6 flex flex-col gap-6">
-                  <Accordion
-                    type="single"
-                    collapsible
-                    className="flex w-full flex-col gap-4"
-                  >
+                  <Accordion type="single" collapsible className="flex w-full flex-col gap-4">
                     {menu.map((item) => renderMobileMenuItem(item))}
                   </Accordion>
                   <div className="border-t py-4">
@@ -207,11 +188,11 @@ const Navbar = ({
                     </div>
                   </div>
                   <div className="flex flex-col gap-3">
-                     <button className="w-full text-black hover:text-gray-400 border focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2   sm:w-auto">
-                 <a href={auth.login.url}>{auth.login.text}</a>
+                    <button className="w-full text-black hover:text-gray-400 border focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2   sm:w-auto">
+                      <a href={auth.login.url}>{auth.login.text}</a>
                     </button>
-         
-                    <button  className="w-full text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900 sm:w-auto">
+
+                    <button className="w-full text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900 sm:w-auto">
                       <a href={auth.signup.url}>{auth.signup.text}</a>
                     </button>
                   </div>
@@ -222,8 +203,8 @@ const Navbar = ({
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
 const renderMenuItem = (item: MenuItem) => {
   if (item.items) {
@@ -241,9 +222,7 @@ const renderMenuItem = (item: MenuItem) => {
                   >
                     {subItem.icon}
                     <div>
-                      <div className="text-sm font-semibold">
-                        {subItem.title}
-                      </div>
+                      <div className="text-sm font-semibold">{subItem.title}</div>
                       {subItem.description && (
                         <p className="text-sm leading-snug text-muted-foreground">
                           {subItem.description}
@@ -257,7 +236,7 @@ const renderMenuItem = (item: MenuItem) => {
           </ul>
         </NavigationMenuContent>
       </NavigationMenuItem>
-    );
+    )
   }
 
   return (
@@ -268,8 +247,8 @@ const renderMenuItem = (item: MenuItem) => {
     >
       {item.title}
     </a>
-  );
-};
+  )
+}
 
 const renderMobileMenuItem = (item: MenuItem) => {
   if (item.items) {
@@ -298,14 +277,14 @@ const renderMobileMenuItem = (item: MenuItem) => {
           ))}
         </AccordionContent>
       </AccordionItem>
-    );
+    )
   }
 
   return (
     <a key={item.title} href={item.url} className="font-semibold">
       {item.title}
     </a>
-  );
-};
+  )
+}
 
-export { Navbar };
+export { Navbar }

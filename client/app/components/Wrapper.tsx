@@ -1,35 +1,31 @@
-import { ReactNode } from 'react'
+import { ReactNode } from "react"
 
 export default function Wrapper({
   children,
   isLoading = false,
-  error = null,
-}:{
-    children: ReactNode,
-    isLoading?: boolean,
-    error?: string | null
-  }) {
+  error = null
+}: {
+  children: ReactNode
+  isLoading?: boolean
+  error?: string | null
+}) {
   if (isLoading) {
     return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-100">
+      <div className="min-h-screen flex justify-center items-center bg-gray-100">
         <p>Chargement en cours...</p>
-    </div>
-  )
+      </div>
+    )
   }
   if (error) {
     return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-100">
-      <div className="text-red-500">
-        {error}
+      <div className="min-h-screen flex justify-center items-center bg-gray-100">
+        <div className="text-red-500">{error}</div>
       </div>
-    </div>
-  )
+    )
   }
   return (
     <div className="">
-      <div className="">
-        {children}
-      </div>
+      <div className="">{children}</div>
     </div>
   )
 }
