@@ -1,6 +1,6 @@
 import { Card, CardContent } from "~/components/ui/card"
 
-export function Testimonial(){
+export function Testimonial() {
   return (
     <section className="py-20 bg-gray-100">
       <div className="container mx-auto px-4">

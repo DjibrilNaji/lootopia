@@ -21,7 +21,7 @@ export function Hero({
       url: "#"
     }
   }
-}: HeroProps){
+}: HeroProps) {
   return (
     <section className="py-32 md:py-12 px-6 lg:px-2 flex justify-center items-center ">
       <div className="container">
@@ -50,21 +50,20 @@ export function Hero({
             </div>
           </div>
           <div className="md:flex md:justify-center">
-          <video
-            className="  w-full max-h-80   md:w-2/3 sm:max-h-96 md:max-h-[400px] lg:max-h-[500px] rounded-md overflow-hidden  object-cover -rotate-90"
-            src="/img/Hero-3.mp4"
-            autoPlay
-            muted
-            playsInline
-            onEnded={(e) => {
-              const video = e.target as HTMLVideoElement
-              video.style.objectFit = "cover"
-            }}
-          />
+            <video
+              className="  w-full max-h-80   md:w-2/3 sm:max-h-96 md:max-h-[400px] lg:max-h-[500px] rounded-md overflow-hidden  object-cover -rotate-90"
+              src="/img/Hero-3.mp4"
+              autoPlay
+              muted
+              playsInline
+              onEnded={(e) => {
+                const video = e.target as HTMLVideoElement
+                video.style.objectFit = "cover"
+              }}
+            />
           </div>
         </div>
       </div>
     </section>
   )
 }
-

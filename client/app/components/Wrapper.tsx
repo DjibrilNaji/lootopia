@@ -23,7 +23,5 @@ export default function Wrapper({
       </div>
     )
   }
-  return (
-      <div>{children}</div>
-  )
+  return <div>{children}</div>
 }

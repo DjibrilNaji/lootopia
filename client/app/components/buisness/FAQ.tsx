@@ -1,7 +1,11 @@
 import { Link } from "@remix-run/react"
 
-
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/ui/accordion"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger
+} from "~/components/ui/accordion"
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar"
 import { Button } from "~/components/ui/button"
 
@@ -48,7 +52,7 @@ const faqItems = [
   }
 ]
 
-export function Faq({ items = faqItems }: FaqProps){
+export function Faq({ items = faqItems }: FaqProps) {
   return (
     <section className="py-10 px-6 lg:px-2 flex justify-center items-center bg-gray-50">
       <div className="container space-y-16">
@@ -97,7 +101,7 @@ export function Faq({ items = faqItems }: FaqProps){
           </p>
           <div className="flex w-full flex-col justify-center gap-2 sm:flex-row">
             <Button className="w-full bg-amber-400 hover:bg-amber-500 text-white sm:w-auto">
-             <Link to="#" target="_blank">
+              <Link to="#" target="_blank">
                 Contacter le Support
               </Link>
             </Button>
@@ -107,4 +111,3 @@ export function Faq({ items = faqItems }: FaqProps){
     </section>
   )
 }
-

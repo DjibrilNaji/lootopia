@@ -82,8 +82,8 @@ export function Work() {
                 </h3>
                 <p className="text-gray-600">
                   Utilisez notre éditeur intuitif pour créer des chasses au trésor personnalisées.
-                  Placez des indices, des énigmes et des trésors virtuels n&apos;importe où dans le monde
-                  réel.
+                  Placez des indices, des énigmes et des trésors virtuels n&apos;importe où dans le
+                  monde réel.
                 </p>
                 <ul className="space-y-2">
                   {[
