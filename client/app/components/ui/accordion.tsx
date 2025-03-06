@@ -2,7 +2,6 @@ import * as React from "react"
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
 import { ChevronDown } from "lucide-react"
 
-// eslint-disable-next-line import/no-unresolved
 import { cn } from "~/lib/utils"
 
 const Accordion = AccordionPrimitive.Root

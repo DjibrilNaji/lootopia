@@ -1,7 +1,9 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion"
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
-import { Button } from "../ui/button"
+import { Link } from "@remix-run/react"
+
+
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/ui/accordion"
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar"
+import { Button } from "~/components/ui/button"
 
 interface FaqItem {
   id: string
@@ -10,13 +12,7 @@ interface FaqItem {
 }
 
 interface FaqProps {
-  heading: string
-  description: string
   items?: FaqItem[]
-  supportHeading: string
-  supportDescription: string
-  supportButtonText: string
-  supportButtonUrl: string
 }
 
 const faqItems = [
@@ -52,22 +48,18 @@ const faqItems = [
   }
 ]
 
-const Faq = ({
-  heading = "FAQ - Questions fréquentes",
-  description = "Tout ce que vous devez savoir sur notre application de chasse au trésor en réalité augmentée.",
-  items = faqItems,
-  supportHeading = "Besoin d'aide supplémentaire ?",
-  supportDescription = "Notre équipe de support est disponible pour répondre à toutes vos questions et vous aider à profiter pleinement de l'expérience.",
-  supportButtonText = "Contact Support"
-}: FaqProps) => {
+export function Faq({ items = faqItems }: FaqProps){
   return (
     <section className="py-10 px-6 lg:px-2 flex justify-center items-center bg-gray-50">
       <div className="container space-y-16">
         <div className="mx-auto flex max-w-3xl flex-col text-left md:text-center">
-          <h2 className="mb-3 text-4xl  font-uniSansItalic font-semibold md:mb-4 lg:mb-6 lg:text-4xl">
-            {heading}
+          <h2 className="mb-3 text-4xl font-uniSansItalic font-semibold md:mb-4 lg:mb-6 lg:text-4xl">
+            FAQ - Questions fréquentes
           </h2>
-          <p className="text-gray-600 lg:text-lg">{description}</p>
+          <p className="text-gray-600 lg:text-lg">
+            Tout ce que vous devez savoir sur notre application de chasse au trésor en réalité
+            augmentée.
+          </p>
         </div>
         <Accordion type="single" collapsible className="mx-auto w-full lg:max-w-3xl">
           {items.map((item) => (
@@ -96,13 +88,18 @@ const Faq = ({
               <AvatarFallback>SU</AvatarFallback>
             </Avatar>
           </div>
-          <h3 className="mb-2 max-w-3xl font-semibold lg:text-lg">{supportHeading}</h3>
-          <p className="mb-8 max-w-3xl text-gray-600 lg:text-lg">{supportDescription}</p>
+          <h3 className="mb-2 max-w-3xl font-semibold lg:text-lg">
+            Besoin d&apos;aide supplémentaire ?
+          </h3>
+          <p className="mb-8 max-w-3xl text-gray-600 lg:text-lg">
+            Notre équipe de support est disponible pour répondre à toutes vos questions et vous
+            aider à profiter pleinement de l&apos;expérience.
+          </p>
           <div className="flex w-full flex-col justify-center gap-2 sm:flex-row">
             <Button className="w-full bg-amber-400 hover:bg-amber-500 text-white sm:w-auto">
-              <a href="#" target="_blank" rel="noreferrer">
-                {supportButtonText}
-              </a>
+             <Link to="#" target="_blank">
+                Contacter le Support
+              </Link>
             </Button>
           </div>
         </div>
@@ -111,4 +108,3 @@ const Faq = ({
   )
 }
 
-export { Faq }

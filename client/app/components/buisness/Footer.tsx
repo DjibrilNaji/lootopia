@@ -1,5 +1,4 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable jsx-a11y/anchor-is-valid */
+import { Link } from "@remix-run/react"
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react"
 
 const sections = [
@@ -32,7 +31,7 @@ const sections = [
   }
 ]
 
-const Footer = () => {
+export function Footer(){
   return (
     <footer className="w-full mt-0">
       <div className="w-full px-4 py-16 md:px-6 lg:px-8">
@@ -51,24 +50,24 @@ const Footer = () => {
               </div>
               <ul className="flex items-center space-x-6 ">
                 <li className="font-medium hover:text-gray-300">
-                  <a href="#">
+                  <Link to="#">
                     <Instagram className="size-6" />
-                  </a>
+                  </Link>
                 </li>
                 <li className="font-medium hover:text-gray-300">
-                  <a href="#">
+                  <Link to="#">
                     <Facebook className="size-6" />
-                  </a>
+                  </Link>
                 </li>
                 <li className="font-medium hover:text-gray-300">
-                  <a href="#">
+                  <Link to="#">
                     <Twitter className="size-6" />
-                  </a>
+                  </Link>
                 </li>
                 <li className="font-medium hover:text-gray-300">
-                  <a href="#">
+                  <Link to="#">
                     <Linkedin className="size-6" />
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -79,7 +78,7 @@ const Footer = () => {
                   <ul className="space-y-4 text-sm ">
                     {section.links.map((link, linkIdx) => (
                       <li key={linkIdx} className="font-medium hover:text-gray-300">
-                        <a href={link.href}>{link.name}</a>
+                        <Link to={link.href}>{link.name}</Link>
                       </li>
                     ))}
                   </ul>
@@ -91,10 +90,10 @@ const Footer = () => {
             <p>© 2025 Lootopia. Tous droits réservés.</p>
             <ul className="flex justify-center gap-4 lg:justify-start">
               <li className="hover:text-gray-300">
-                <a href="#"> Conditions d&apos;utilisation</a>
+                <Link to="#"> Conditions d&apos;utilisation</Link>
               </li>
               <li className="hover:text-gray-300">
-                <a href="#"> Politique de confidentialité</a>
+                <Link to="#"> Politique de confidentialité</Link>
               </li>
             </ul>
           </div>
@@ -103,5 +102,3 @@ const Footer = () => {
     </footer>
   )
 }
-
-export { Footer }

@@ -1,7 +1,6 @@
-/* eslint-disable react/no-unescaped-entities */
-import { Card, CardContent } from "../ui/card"
+import { Card, CardContent } from "~/components/ui/card"
 
-const Testimonial = () => {
+export function Testimonial(){
   return (
     <section className="py-20 bg-gray-100">
       <div className="container mx-auto px-4">
@@ -53,7 +52,7 @@ const Testimonial = () => {
                     <p className="text-sm text-gray-500">{testimonial.role}</p>
                   </div>
                 </div>
-                <p className="text-gray-600 italic">"{testimonial.quote}"</p>
+                <p className="text-gray-600 italic">&quot;{testimonial.quote}&quot;</p>
               </CardContent>
             </Card>
           ))}
@@ -62,4 +61,3 @@ const Testimonial = () => {
     </section>
   )
 }
-export { Testimonial }

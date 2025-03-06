@@ -1,11 +1,9 @@
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable no-empty-pattern */
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs"
 import { Sparkles } from "lucide-react"
 import { useState } from "react"
 
-const Work = ({}) => {
-  const [activeTab, setActiveTab] = useState("découvrir")
+export function Work() {
+  const [activeTab, setActiveTab] = useState("Discovery")
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
@@ -16,25 +14,25 @@ const Work = ({}) => {
             </h2>
             <TabsList className="p-1 ">
               <TabsTrigger
-                value="découvrir"
+                value="Discovery"
                 className={`${
-                  activeTab === "découvrir" ? "bg-amber-400 rounded-sm text-white" : "text-gray-700"
+                  activeTab === "Discovery" ? "bg-amber-400 rounded-sm text-white" : "text-gray-700"
                 } px-6 py-2`}
               >
                 Découvrir
               </TabsTrigger>
               <TabsTrigger
-                value="créer"
+                value="Create"
                 className={`${
-                  activeTab === "créer" ? "bg-amber-400 rounded-sm text-white" : "text-gray-700"
+                  activeTab === "Create" ? "bg-amber-400 rounded-sm text-white" : "text-gray-700"
                 } px-6 py-2`}
               >
                 Créer
               </TabsTrigger>
               <TabsTrigger
-                value="jouer"
+                value="Play"
                 className={`${
-                  activeTab === "jouer" ? "bg-amber-400 rounded-sm text-white" : "text-gray-700"
+                  activeTab === "Play" ? "bg-amber-400 rounded-sm text-white" : "text-gray-700"
                 } px-6 py-2`}
               >
                 Jouer
@@ -42,7 +40,7 @@ const Work = ({}) => {
             </TabsList>
           </div>
 
-          <TabsContent value="découvrir" className="mt-6">
+          <TabsContent value="Discovery" className="mt-6">
             <div className="flex flex-col md:flex-row gap-8 items-center">
               <div className="md:w-1/2">
                 <img
@@ -76,7 +74,7 @@ const Work = ({}) => {
             </div>
           </TabsContent>
 
-          <TabsContent value="créer" className="mt-6">
+          <TabsContent value="Create" className="mt-6">
             <div className="flex flex-col md:flex-row gap-8 items-center">
               <div className="md:w-1/2 space-y-4">
                 <h3 className="text-2xl font-semibold font-uniSansItalic text-gray-800">
@@ -84,7 +82,7 @@ const Work = ({}) => {
                 </h3>
                 <p className="text-gray-600">
                   Utilisez notre éditeur intuitif pour créer des chasses au trésor personnalisées.
-                  Placez des indices, des énigmes et des trésors virtuels n'importe où dans le monde
+                  Placez des indices, des énigmes et des trésors virtuels n&apos;importe où dans le monde
                   réel.
                 </p>
                 <ul className="space-y-2">
@@ -110,7 +108,7 @@ const Work = ({}) => {
             </div>
           </TabsContent>
 
-          <TabsContent value="jouer" className="mt-6">
+          <TabsContent value="Play" className="mt-6">
             <div className="flex flex-col md:flex-row gap-8 items-center">
               <div className="md:w-1/2">
                 <img
@@ -121,10 +119,10 @@ const Work = ({}) => {
               </div>
               <div className="md:w-1/2 space-y-4">
                 <h3 className="text-2xl font-semibold font-uniSansItalic text-gray-800">
-                  Vivez l'aventure
+                  Vivez l&apos;aventure
                 </h3>
                 <p className="text-gray-600">
-                  Formez une équipe avec vos amis ou affrontez d'autres joueurs. Résolvez des
+                  Formez une équipe avec vos amis ou affrontez d&apos;autres joueurs. Résolvez des
                   énigmes, suivez des indices et découvrez des trésors cachés en réalité augmentée.
                 </p>
                 <ul className="space-y-2">
@@ -145,5 +143,3 @@ const Work = ({}) => {
     </section>
   )
 }
-
-export { Work }

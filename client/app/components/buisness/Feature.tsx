@@ -18,7 +18,7 @@ interface FeatureProps {
   reasons?: Reason[]
 }
 
-const Feature = ({
+export function Feature({
   reasons = [
     {
       title: "Réalité Augmentée (RA)",
@@ -51,7 +51,7 @@ const Feature = ({
       icon: <BatteryCharging className="size-6" />
     }
   ]
-}: FeatureProps) => {
+}: FeatureProps){
   return (
     <section className="py-32 px-6 lg:px-2 bg-gray-100 flex justify-center items-center sm:px-4">
       <div className="container">
@@ -78,4 +78,3 @@ const Feature = ({
   )
 }
 
-export { Feature }
