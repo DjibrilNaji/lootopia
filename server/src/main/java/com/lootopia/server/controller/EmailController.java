@@ -17,7 +17,6 @@ public class EmailController {
 
     @GetMapping("/send-email")
     public String sendEmail(@RequestParam String to) throws MessagingException {
-        emailService.sendSimpleMessage(to, "Test Email");
         return "Email sent successfully!";
     }
 }
