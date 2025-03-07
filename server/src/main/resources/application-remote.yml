@@ -11,6 +11,9 @@ spring:
   session:
     jdbc:
       initialize-schema: always
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    enabled: true
   cors:
     allowed:
       origins: ${CORS_ORIGINS}
