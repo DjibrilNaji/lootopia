@@ -11,14 +11,14 @@ export default function Wrapper({
 }) {
   if (isLoading) {
     return (
-      <div className="min-h-screen flex justify-center items-center bg-gray-100">
+      <div className="flex min-h-screen items-center justify-center bg-gray-100">
         <p>Chargement en cours...</p>
       </div>
     )
   }
   if (error) {
     return (
-      <div className="min-h-screen flex justify-center items-center bg-gray-100">
+      <div className="flex min-h-screen items-center justify-center bg-gray-100">
         <div className="text-red-500">{error}</div>
       </div>
     )

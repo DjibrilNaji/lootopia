@@ -5,9 +5,9 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger
-} from "~/components/ui/accordion"
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar"
-import { Button } from "~/components/ui/button"
+} from "~/client/components/ui/accordion"
+import { Avatar, AvatarFallback, AvatarImage } from "~/client/components/ui/avatar"
+import { Button } from "~/client/components/ui/button"
 
 interface FaqItem {
   id: string
@@ -54,10 +54,10 @@ const faqItems = [
 
 export function Faq({ items = faqItems }: FaqProps) {
   return (
-    <section className="py-10 px-6 lg:px-2 flex justify-center items-center bg-gray-50">
+    <section className="flex items-center justify-center bg-gray-50 px-6 py-10 lg:px-2">
       <div className="container space-y-16">
         <div className="mx-auto flex max-w-3xl flex-col text-left md:text-center">
-          <h2 className="mb-3 text-4xl font-uniSansItalic font-semibold md:mb-4 lg:mb-6 lg:text-4xl">
+          <h2 className="mb-3 font-uniSansItalic text-4xl font-semibold md:mb-4 lg:mb-6 lg:text-4xl">
             FAQ - Questions fréquentes
           </h2>
           <p className="text-gray-600 lg:text-lg">
@@ -100,7 +100,7 @@ export function Faq({ items = faqItems }: FaqProps) {
             aider à profiter pleinement de l&apos;expérience.
           </p>
           <div className="flex w-full flex-col justify-center gap-2 sm:flex-row">
-            <Button className="w-full bg-amber-400 hover:bg-amber-500 text-white sm:w-auto">
+            <Button className="w-full bg-amber-400 text-white hover:bg-amber-500 sm:w-auto">
               <Link to="#" target="_blank">
                 Contacter le Support
               </Link>

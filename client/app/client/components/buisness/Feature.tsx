@@ -53,10 +53,10 @@ export function Feature({
   ]
 }: FeatureProps) {
   return (
-    <section className="py-32 px-6 lg:px-2 bg-gray-100 flex justify-center items-center sm:px-4">
+    <section className="flex items-center justify-center bg-gray-100 px-6 py-32 sm:px-4 lg:px-2">
       <div className="container">
         <div className="mb-10 md:mb-20">
-          <h2 className="mb-2 text-center text-3xl font-semibold font-uniSans lg:text-5xl">
+          <h2 className="mb-2 text-center font-uniSans text-3xl font-semibold lg:text-5xl">
             Découvrez une expérience
             <span className="italic text-amber-400"> immersive </span>
             qui transforme votre environnement
@@ -64,7 +64,7 @@ export function Feature({
         </div>
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
           {reasons.map((reason, i) => (
-            <div key={i} className="flex flex-col bg-white p-6 rounded-lg shadow-sm">
+            <div key={i} className="flex flex-col rounded-lg bg-white p-6 shadow-sm">
               <div className="mb-5 flex size-16 items-center justify-center rounded-full bg-amber-50">
                 {reason.icon}
               </div>
