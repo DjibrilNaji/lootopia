@@ -1,5 +1,10 @@
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react"
 import type { LinksFunction } from "@remix-run/node"
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react"
+import { Hydrate, QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+import React from "react"
+import { Toaster } from "sonner"
+import { useDehydratedState } from "use-dehydrated-state"
 
 import "./tailwind.css"
 
@@ -25,7 +30,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="flex h-screen flex-col">
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -35,5 +40,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />
+  const [queryClient] = React.useState(() => new QueryClient())
+
+  const dehydratedState = useDehydratedState()
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Hydrate state={dehydratedState}>
+        <ReactQueryDevtools initialIsOpen={false} />
+        <Toaster richColors position="bottom-right" />
+        <Outlet />
+      </Hydrate>
+    </QueryClientProvider>
+  )
 }
