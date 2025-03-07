@@ -26,6 +26,8 @@
     "@remix-run/express": "^2.15.3",
     "@remix-run/node": "^2.15.3",
     "@remix-run/react": "^2.15.3",
+    "@tanstack/react-query": "^4.36.1",
+    "@tanstack/react-query-devtools": "^4.36.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "compression": "^1.7.4",
@@ -40,7 +42,8 @@
     "react-dom": "^18.2.0",
     "sonner": "^2.0.1",
     "tailwind-merge": "^3.0.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "use-dehydrated-state": "^0.1.0"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.15.3",
@@ -53,6 +56,7 @@
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",
     "autoprefixer": "^10.4.19",
+    "axios": "^1.8.1",
     "cypress": "^14.0.3",
     "eslint": "^8.38.0",
     "eslint-import-resolver-typescript": "^3.6.1",
