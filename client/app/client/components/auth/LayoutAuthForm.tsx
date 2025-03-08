@@ -11,7 +11,7 @@ export function LayoutAuthForm({ children }: LayoutAuthFormProps) {
         <img src={routes.img.lootopia} alt="lootopia" className="object-cover brightness-75" />
       </div>
 
-      <div className="m-10 flex h-full flex-col items-center justify-center md:w-1/2">
+      <div className="m-10 flex h-full w-full flex-col items-center justify-center md:w-2/3 lg:w-1/2">
         {children}
       </div>
     </div>

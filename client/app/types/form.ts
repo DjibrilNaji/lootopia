@@ -10,3 +10,14 @@ export const signupFormSchema = z
   .required()
 
 export type SignupType = z.infer<typeof signupFormSchema>
+
+export const contactFormSchema = z
+  .object({
+    name: stringValidator.min(1, "Le nom est requis"),
+    email: emailValidator,
+    subject: stringValidator.min(1, "Le sujet est requis"),
+    message: stringValidator.min(1, "Le message est requis")
+  })
+  .required()
+
+export type ContactFormType = z.infer<typeof contactFormSchema>

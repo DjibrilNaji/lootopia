@@ -52,7 +52,7 @@ export function Register({ setCheckEmail }: RegisterProps) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
-        className="mx-auto flex h-full w-96 flex-col justify-center space-y-6 lg:w-3/4"
+        className="flex h-full w-full flex-col justify-center space-y-6 lg:w-3/4"
       >
         <h1 className="text-center text-4xl font-bold">Inscription</h1>
         <FormField
@@ -95,7 +95,7 @@ export function Register({ setCheckEmail }: RegisterProps) {
                     {...field}
                   />
                   <button
-                    className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center"
+                    className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-r-lg border-y border-r bg-white"
                     type="button"
                     onClick={handleShowPassword}
                   >

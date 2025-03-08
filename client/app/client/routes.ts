@@ -4,6 +4,7 @@ const routes = {
     login: "/login",
     register: "/register"
   },
+  contact: "/contact",
   img: {
     lootopia: "/img/lootopia.png",
     notFound: "/img/404.png",
@@ -14,7 +15,8 @@ const routes = {
       register: "/users/register",
       verify: (email: string, activationCode: string) =>
         `/users/verify?email=${email}&activationCode=${activationCode}`
-    }
+    },
+    contact: "/contact"
   }
 }
 
