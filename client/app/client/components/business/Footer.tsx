@@ -18,7 +18,7 @@ const sections = [
       { name: "Support client", href: "#" },
       { name: "Guide d'utilisation", href: "#" },
       { name: "FAQ", href: "#" },
-      { name: "Contact", href: "#" }
+      { name: "Contact", href: routes.contact }
     ]
   },
   {

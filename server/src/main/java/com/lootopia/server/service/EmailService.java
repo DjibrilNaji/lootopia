@@ -1,5 +1,6 @@
 package com.lootopia.server.service;
 
+import com.lootopia.server.entity.Contact;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.slf4j.LoggerFactory;
@@ -51,6 +52,54 @@ public class EmailService {
 
             helper.setText(htmlContent, true);
             helper.addInline("lootopiaLogo", new ClassPathResource("static/chest.png"));
+            mailSender.send(message);
+        } catch (MailException | MessagingException e) {
+            LoggerFactory.getLogger(EmailService.class).error("Error while sending email: {}", e.getMessage());
+        }
+    }
+
+    public void validateContactEmail(String to, Contact contact) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        try {
+            helper.setFrom(fromEmail);
+            helper.setTo(to);
+            helper.setSubject("Confirmation de réception - Lootopia");
+
+            String htmlContent = """
+                    <div style="font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0">
+                              <div style="max-width: 600px; margin: 20px auto; padding: 20px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                                <div style="text-align: center; padding: 20px 0; border-bottom: 2px solid #f0f0f0;">
+                                  <h1>Confirmation de réception</h1>
+                                </div>
+                                <div style="padding: 20px 0;">
+                                  <p>Bonjour\s""" + contact.getName() + """
+                    ,</p>
+                    <p>
+                      Nous avons bien reçu votre message. Notre équipe vous répondra dans les plus brefs délais.
+                    </p>
+                    
+                    <div style="background-color: #f8f9fa; padding: 15px; border-radius: 4px; margin: 15px 0;">
+                      <h3>Détails de votre message :</h3>
+                      <p><strong>Sujet :</strong>\s""" + contact.getSubject() + """
+                    </p>
+                    <p><strong>Message :</strong></p>
+                    <p>""" + contact.getMessage() + """
+                                  </p>
+                                  </div>
+                    
+                                  <p>Merci de nous avoir contacté !</p>
+                                </div>
+                                <div style="text-align: center; padding-top: 20px; color: #666; font-size: 12px;">
+                                  <p>Cet email est une confirmation automatique, merci de ne pas y répondre.</p>
+                                  <p>&copy; 2024 Lootopia. Tous droits réservés.</p>
+                                </div>
+                              </div>
+                            </div>
+                    """;
+
+            helper.setText(htmlContent, true);
             mailSender.send(message);
         } catch (MailException | MessagingException e) {
             LoggerFactory.getLogger(EmailService.class).error("Error while sending email: {}", e.getMessage());

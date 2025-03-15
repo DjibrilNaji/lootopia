@@ -18,6 +18,7 @@ import {
 } from "~/client/components/ui/navigation-menu"
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
@@ -127,7 +128,7 @@ export function Navbar({
   ],
   mobileExtraLinks = [
     { name: "Press", url: "#" },
-    { name: "Contact", url: "#" },
+    { name: "Contact", url: routes.contact },
     { name: "Imprint", url: "#" },
     { name: "Sitemap", url: "#" }
   ],
@@ -192,35 +193,41 @@ export function Navbar({
                   <Accordion type="single" collapsible className="flex w-full flex-col gap-4">
                     {menu.map((item) => renderMobileMenuItem(item))}
                   </Accordion>
+
                   <div className="border-t py-4">
                     <div className="grid grid-cols-2 justify-start">
                       {mobileExtraLinks.map((link, idx) => (
-                        <Link
-                          key={idx}
-                          className="inline-flex h-10 items-center gap-2 whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-accent-foreground"
-                          to={link.url}
-                        >
-                          {link.name}
-                        </Link>
+                        <SheetClose asChild key={idx}>
+                          <Link
+                            className="inline-flex h-10 items-center gap-2 whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-accent-foreground"
+                            to={link.url}
+                          >
+                            {link.name}
+                          </Link>
+                        </SheetClose>
                       ))}
                     </div>
                   </div>
-                  <div className="flex flex-col gap-3">
-                    <Button
-                      variant="outline"
-                      className="mb-2 me-2 w-full rounded-lg border px-5 py-2.5 text-center text-sm font-medium text-black hover:text-gray-400 focus:outline-none focus:ring-4 sm:w-auto"
-                      asChild
-                    >
-                      <Link to={auth.login.url}>{auth.login.text}</Link>
-                    </Button>
 
-                    <Button
-                      variant="outline"
-                      className="mb-2 me-2 w-full rounded-lg border border-yellow-400 px-5 py-2.5 text-center text-sm font-medium text-yellow-400 hover:bg-yellow-500 hover:text-white focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:border-yellow-300 dark:text-yellow-300 dark:hover:bg-yellow-400 dark:hover:text-white dark:focus:ring-yellow-900 sm:w-auto"
-                      asChild
-                    >
-                      <Link to={auth.signup.url}>{auth.signup.text}</Link>
-                    </Button>
+                  <div className="flex flex-col gap-3">
+                    <SheetClose asChild>
+                      <Button
+                        variant="outline"
+                        className="mb-2 me-2 w-full rounded-lg border px-5 py-2.5 text-center text-sm font-medium text-black hover:text-gray-400 focus:outline-none focus:ring-4 sm:w-auto"
+                        asChild
+                      >
+                        <Link to={auth.login.url}>{auth.login.text}</Link>
+                      </Button>
+                    </SheetClose>
+                    <SheetClose asChild>
+                      <Button
+                        variant="outline"
+                        className="mb-2 me-2 w-full rounded-lg border border-yellow-400 px-5 py-2.5 text-center text-sm font-medium text-yellow-400 hover:bg-yellow-500 hover:text-white focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:border-yellow-300 dark:text-yellow-300 dark:hover:bg-yellow-400 dark:hover:text-white dark:focus:ring-yellow-900 sm:w-auto"
+                        asChild
+                      >
+                        <Link to={auth.signup.url}>{auth.signup.text}</Link>
+                      </Button>
+                    </SheetClose>
                   </div>
                 </div>
               </SheetContent>

@@ -12,3 +12,10 @@ export type RegisterDto = {
   email: string
   password: string
 }
+
+export type ContactDto = {
+  name: string
+  email: string
+  subject: string
+  message: string
+}

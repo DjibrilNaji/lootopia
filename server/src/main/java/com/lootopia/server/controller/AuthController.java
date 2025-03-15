@@ -3,7 +3,6 @@ package com.lootopia.server.controller;
 import com.lootopia.server.dto.RegisterDto;
 import com.lootopia.server.repository.UserRepository;
 import com.lootopia.server.service.AuthService;
-import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,7 @@ public class AuthController {
     private UserRepository userRepository;
 
     @PostMapping("/register")
-    public ResponseEntity<Map<String, String>> register(@RequestBody RegisterDto registerDto) throws MessagingException {
+    public ResponseEntity<Map<String, String>> register(@RequestBody RegisterDto registerDto) {
         return authService.registerUser(registerDto);
     }
 
