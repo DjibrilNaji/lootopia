@@ -1,3 +1,4 @@
+import { RegisterForm } from "@/src/components/auth/RegisterForm"
 import { Entypo } from "@expo/vector-icons"
 import { router } from "expo-router"
 import { Pressable, StyleSheet, Text } from "react-native"
@@ -10,6 +11,8 @@ export default function RegisterScreen() {
         <Entypo name="arrow-left" size={24} color="black" />
         <Text>Retour</Text>
       </Pressable>
+
+      <RegisterForm />
     </SafeAreaView>
   )
 }
