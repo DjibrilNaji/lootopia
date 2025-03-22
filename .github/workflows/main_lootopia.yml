@@ -35,6 +35,18 @@ jobs:
           cd server
           mvn clean install -D spring.profiles.active=remote -DskipTests -X
 
+      - name: Delete All Artifacts
+        env:
+          REPO: ${{ github.repository }}
+        run: |
+          echo "Fetching artifacts for repository $REPO..."
+          gh api -X GET "repos/$REPO/actions/artifacts" --paginate \
+            | jq -r '.artifacts[] | .id' \
+            | while read -r artifact_id; do
+                echo "Deleting artifact $artifact_id..."
+                gh api -X DELETE "repos/$REPO/actions/artifacts/$artifact_id"
+              done
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
