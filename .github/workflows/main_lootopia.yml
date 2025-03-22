@@ -40,6 +40,19 @@ jobs:
         with:
           name: java-app
           path: "${{ github.workspace }}/server/target/*.jar"
+
+      - name: Delete All Artifacts
+        env:
+          REPO: ${{ github.repository }}
+        run: |
+          echo "Fetching artifacts for repository $REPO..."
+          gh api -X GET "repos/$REPO/actions/artifacts" --paginate \
+            | jq -r '.artifacts[] | .id' \
+            | while read -r artifact_id; do
+                echo "Deleting artifact $artifact_id..."
+                gh api -X DELETE "repos/$REPO/actions/artifacts/$artifact_id"
+              done
+
 # Problem with azure account
 # deploy:
 #   runs-on: ubuntu-latest
