@@ -52,26 +52,6 @@ export const login = async (loginDto: LoginDto): Promise<ApiAuthResponse> => {
   }
 }
 
-export const isLoggedIn = async (): Promise<boolean> => {
-  try {
-    const hasCookies =
-      document.cookie.includes("accessToken") || document.cookie.includes("refreshToken")
-
-    if (!hasCookies) return false
-
-    const accessToken = getCookie("accessToken")
-    if (accessToken) {
-      const payload = JSON.parse(atob(accessToken.split(".")[1]))
-      return payload.exp > Date.now() / 1000
-    }
-
-    return false
-  } catch (error) {
-    console.error("Erreur de vérification :", error)
-    return false
-  }
-}
-
 export const logout = async (): Promise<{ success: boolean; message?: string }> => {
   try {
     const credentials = btoa(`admin:test`)
@@ -115,13 +95,6 @@ export const logout = async (): Promise<{ success: boolean; message?: string }> 
           : "Erreur inconnue"
     }
   }
-}
-
-const getCookie = (name: string): string | null => {
-  const value = `; ${document.cookie}`
-  const parts = value.split(`; ${name}=`)
-  if (parts.length === 2) return parts.pop()?.split(";").shift() || null
-  return null
 }
 
 export const verifyMFA = async (email: string, inputCode: string): Promise<ApiAuthResponse> => {

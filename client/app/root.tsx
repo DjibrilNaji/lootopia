@@ -1,6 +1,6 @@
 import type { LinksFunction } from "@remix-run/node"
 import {
-  json,
+  data,
   Links,
   Meta,
   Outlet,
@@ -62,7 +62,7 @@ export const loader = async ({ request }: { request: Request }) => {
   const accessToken: string | undefined = cookies["accessToken"]
   const isLoggedIn: boolean = !!accessToken
 
-  return json({
+  return data({
     isLoggedIn,
     user: accessToken ? {} : null
   })
