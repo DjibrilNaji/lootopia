@@ -17,7 +17,7 @@ const routes = {
       logout: "/users/logout",
       verify: (email: string, activationCode: string) =>
         `/users/verify?email=${email}&activationCode=${activationCode}`,
-       verifyMFA: () => "/2fa/verify-code",
+      verifyMFA: () => "/2fa/verify-code",
       validateToken: "/users/validateToken",
       refreshToken: "/users/refresh"
     },

@@ -1,6 +1,6 @@
 import { Outlet } from "@remix-run/react"
-import { Navbar } from "~/client/components/buisness/Header"
-import { Footer } from "~/client/components/buisness/Footer"
+import { Navbar } from "~/client/components/business/Header"
+import { Footer } from "~/client/components/business/Footer"
 
 export default function AuthLayout() {
   return (

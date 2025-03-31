@@ -65,7 +65,7 @@ export const logout = async (): Promise<{ success: boolean; message?: string }> 
     )
 
     const cleanClient = () => {
-      ["accessToken"].forEach((name) => {
+      ;["accessToken"].forEach((name) => {
         document.cookie = `${name}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT; SameSite=Lax`
       })
       sessionStorage.clear()
