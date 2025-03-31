@@ -42,6 +42,12 @@ databaseChangeLog:
                     unique: true
                     nullable: true
               - column:
+                  name: two_factor_enabled
+                  type: boolean
+                  constraints:
+                    unique: false
+                    nullable: false
+              - column:
                   name: created_at
                   type: timestamp
                   constraints:

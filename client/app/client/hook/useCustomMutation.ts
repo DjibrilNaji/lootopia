@@ -2,7 +2,6 @@ import { useMutation, UseMutationOptions } from "@tanstack/react-query"
 import { toast } from "sonner"
 
 import { ApiError } from "~/types/api"
-
 export function useCustomMutation<TData, TVariables>(
   mutationFn: (variables: TVariables) => Promise<TData>,
   options?: UseMutationOptions<TData, ApiError, TVariables>
@@ -21,6 +20,11 @@ export function useCustomMutation<TData, TVariables>(
       }
 
       toast.error(errorMessage)
+    },
+    onSuccess: (data: TData, variables: TVariables, context: unknown) => {
+      if (options?.onSuccess) {
+        options.onSuccess(data, variables, context)
+      }
     },
     ...options
   })

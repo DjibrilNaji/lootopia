@@ -13,8 +13,13 @@ const routes = {
   api: {
     auth: {
       register: "/users/register",
+      login: "/users/login",
+      logout: "/users/logout",
       verify: (email: string, activationCode: string) =>
-        `/users/verify?email=${email}&activationCode=${activationCode}`
+        `/users/verify?email=${email}&activationCode=${activationCode}`,
+       verifyMFA: () => "/2fa/verify-code",
+      validateToken: "/users/validateToken",
+      refreshToken: "/users/refresh"
     },
     contact: "/contact"
   }

@@ -1,5 +1,13 @@
 import type { LinksFunction } from "@remix-run/node"
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react"
+import {
+  json,
+  Links,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  useLoaderData
+} from "@remix-run/react"
 import { Hydrate, QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import React from "react"
@@ -39,16 +47,38 @@ export function Layout({ children }: { children: React.ReactNode }) {
   )
 }
 
+interface Cookies {
+  [key: string]: string
+}
+
+export const loader = async ({ request }: { request: Request }) => {
+  const cookieHeader = request.headers.get("Cookie") || ""
+
+  const cookies: Cookies = cookieHeader.split(";").reduce((acc: Cookies, cookie: string) => {
+    const [name, value] = cookie.trim().split("=")
+    return { ...acc, [name]: value }
+  }, {})
+
+  const accessToken: string | undefined = cookies["accessToken"]
+  const isLoggedIn: boolean = !!accessToken
+
+  return json({
+    isLoggedIn,
+    user: accessToken ? {} : null
+  })
+}
+
 export default function App() {
   const [queryClient] = React.useState(() => new QueryClient())
-
   const dehydratedState = useDehydratedState()
+  const { isLoggedIn } = useLoaderData<typeof loader>()
+
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={dehydratedState}>
         <ReactQueryDevtools initialIsOpen={false} />
         <Toaster richColors position="bottom-right" />
-        <Outlet />
+        <Outlet context={{ isLoggedIn }} />
       </Hydrate>
     </QueryClientProvider>
   )
