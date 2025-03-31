@@ -1,5 +1,4 @@
 import type { MetaFunction } from "@remix-run/node"
-
 import { Faq } from "~/client/components/buisness/FAQ"
 import { Feature } from "~/client/components/buisness/Feature"
 import { Hero } from "~/client/components/buisness/Hero"

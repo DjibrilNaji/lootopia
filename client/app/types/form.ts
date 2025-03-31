@@ -10,3 +10,12 @@ export const signupFormSchema = z
   .required()
 
 export type SignupType = z.infer<typeof signupFormSchema>
+
+export const signInFormSchema = z
+  .object({
+    email: emailValidator,
+    password: passwordValidator
+  })
+  .required()
+
+export type SignInType = z.infer<typeof signInFormSchema>

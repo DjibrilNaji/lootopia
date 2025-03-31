@@ -1,12 +1,13 @@
 package com.lootopia.server.dto;
 
-import lombok.Data;
+public class LoginDto {
+    public String getPassword() {
+        return password;
+    }
 
-@Data
-public class RegisterDto {
-    private String email;
-    private String username;
-    private String password;
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public String getEmail() {
         return email;
@@ -24,11 +25,7 @@ public class RegisterDto {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    public String username;
+    public String password;
+    public String email;
 }

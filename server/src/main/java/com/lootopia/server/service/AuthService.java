@@ -8,7 +8,12 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -22,6 +27,16 @@ public class AuthService {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    private final PasswordEncoder passwordEncoder;
+
+    public AuthService(PasswordEncoder passwordEncoder, PasswordEncoder passwordEncoder1) {
+        this.passwordEncoder = passwordEncoder1;
+    }
+
 
     @Transactional()
     public ResponseEntity<Map<String, String>> registerUser(RegisterDto registerDTO) {
@@ -97,4 +112,16 @@ public class AuthService {
         
         return ResponseEntity.ok(Map.of("customMessage", "Votre compte a été activé avec succès."));
     }
+
+    public UserDetails authenticate(String email, String rawPassword) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
+
+        if (!passwordEncoder.matches(rawPassword, user.getPasswordHash())) {
+            throw new BadCredentialsException("Mot de passe incorrect.");
+        }
+
+        return userDetailsService.loadUserByUsername(email);
+    }
+
 }
