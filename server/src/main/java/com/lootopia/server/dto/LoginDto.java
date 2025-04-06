@@ -1,6 +1,11 @@
 package com.lootopia.server.dto;
 
 public class LoginDto {
+
+    public String username;
+    public String password;
+    public String email;
+
     public String getPassword() {
         return password;
     }
@@ -24,8 +29,4 @@ public class LoginDto {
     public void setUsername(String username) {
         this.username = username;
     }
-
-    public String username;
-    public String password;
-    public String email;
 }

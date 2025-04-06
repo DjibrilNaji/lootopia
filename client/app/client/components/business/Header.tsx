@@ -1,4 +1,4 @@
-import { Link, useOutletContext } from "@remix-run/react"
+import { Link, useOutletContext, useNavigate } from "@remix-run/react"
 import { Book, Menu, Sunset, Trees, Zap } from "lucide-react"
 
 import {
@@ -139,14 +139,11 @@ export function Navbar({
   }
 }: NavbarProps) {
   const { isLoggedIn } = useOutletContext<{ isLoggedIn: boolean }>()
+  const navigate = useNavigate()
 
   const handleLogout = async () => {
-    try {
-      await logout()
-      window.location.href = routes.home
-    } catch (error) {
-      console.error("Erreur lors de la déconnexion:", error)
-    }
+      await logout() 
+      navigate(routes.home) 
   }
   return (
     <section className="flex items-center justify-center border-b py-4">

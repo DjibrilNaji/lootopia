@@ -1,5 +1,4 @@
 import { MetaFunction } from "@remix-run/node"
-import { useNavigate } from "@remix-run/react"
 
 import { LayoutAuthForm } from "~/client/components/auth/LayoutAuthForm"
 import { LoginForm } from "~/client/components/auth/LoginForm"
@@ -9,14 +8,10 @@ export const meta: MetaFunction = () => {
 }
 
 export default function LoginPage() {
-  const navigate = useNavigate()
-  const handleLoginSuccess = () => {
-    navigate("/")
-  }
 
   return (
     <LayoutAuthForm>
-      <LoginForm onSuccess={handleLoginSuccess}></LoginForm>
+      <LoginForm></LoginForm>
     </LayoutAuthForm>
   )
 }

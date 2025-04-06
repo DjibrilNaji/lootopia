@@ -1,12 +1,7 @@
 package com.lootopia.server.entity;
-
-import com.twilio.twiml.voice.Sip;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "users")

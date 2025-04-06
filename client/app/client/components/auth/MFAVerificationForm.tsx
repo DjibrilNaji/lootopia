@@ -1,4 +1,5 @@
 import { LoaderCircleIcon } from "lucide-react"
+import { useNavigate } from "@remix-run/react"
 import { useState } from "react"
 import { toast } from "sonner"
 
@@ -8,13 +9,14 @@ import { InputOTP, InputOTPSlot } from "~/client/components/ui/input-otp"
 
 interface MFAVerificationFormProps {
   email: string
-  onSuccess: () => void
+  setIsMFARequired: (value: boolean) => void
   onBack: () => void
 }
 
-export function MFAVerificationForm({ email, onSuccess, onBack }: MFAVerificationFormProps) {
+export function MFAVerificationForm({ email, setIsMFARequired, onBack }: MFAVerificationFormProps) {
   const [inputCode, setInputCode] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -23,7 +25,8 @@ export function MFAVerificationForm({ email, onSuccess, onBack }: MFAVerificatio
     try {
       const response = await verifyMFA(email, inputCode)
       toast.success(response.customMessage)
-      onSuccess()
+      setIsMFARequired(false) 
+      navigate("/")
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Code invalide")
     } finally {

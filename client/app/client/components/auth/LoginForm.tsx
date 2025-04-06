@@ -18,17 +18,15 @@ import { Input } from "~/client/components/ui/input"
 import { useCustomMutation } from "~/client/hook/useCustomMutation"
 import { login } from "~/client/services/auth"
 import { signInFormSchema, SignInType } from "~/types/form"
-import { MFAVerificationForm } from "./MFAVerificationForm"
+import { MFAVerificationForm } from "~/client/components/auth/MFAVerificationForm"
+import { useNavigate } from "@remix-run/react"
 
-interface LoginProps {
-  onSuccess: () => void
-}
-
-export function LoginForm({ onSuccess }: LoginProps) {
+export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [isMFARequired, setIsMFARequired] = useState(false)
   const [email, setEmail] = useState("")
-
+  const navigate = useNavigate() 
+  
   const handleShowPassword = () => setShowPassword((prevState) => !prevState)
 
   const form = useForm<z.infer<typeof signInFormSchema>>({
@@ -39,41 +37,41 @@ export function LoginForm({ onSuccess }: LoginProps) {
     }
   })
 
-  const { isLoading, mutate } = useCustomMutation(
-    async (values: SignInType) => {
-      return await login(values)
-    },
-    {
-      onSuccess: (data, values) => {
-        if (data?.requires2fa) {
-          setEmail(values.email)
-          setIsMFARequired(true)
-          toast.info("Un code MFA a été envoyé à votre email.")
-        } else {
-          toast.success(data?.customMessage)
-          onSuccess()
-        }
-      },
-      onError: (error) => {
-        toast.error(error.message)
+ const { isLoading, mutate } = useCustomMutation(
+  async (values: SignInType) => {
+    return await login(values)
+  },
+  {
+    onSuccess: (data, values) => {
+      if (data?.requires2fa) {
+        setEmail(values.email)
+        setIsMFARequired(true)
+        toast.info("Un code MFA a été envoyé à votre email.")
+      } else {
+        toast.success(data?.customMessage)
+        navigate("/")
       }
+    },
+    onError: (error) => {
+      toast.error(error.message)
     }
-  )
+  }
+)
 
   const handleSubmit = (values: SignInType) => {
     mutate(values)
   }
 
-  if (isMFARequired) {
-    return (
-      <MFAVerificationForm
-        key="mfa"
-        email={email}
-        onSuccess={onSuccess}
-        onBack={() => setIsMFARequired(false)}
-      />
-    )
-  }
+if (isMFARequired) {
+  return (
+    <MFAVerificationForm
+      email={email}
+      setIsMFARequired={setIsMFARequired}
+      onBack={() => setIsMFARequired(false)}
+    />
+  )
+}
+
 
   return (
     <Form key="login" {...form}>

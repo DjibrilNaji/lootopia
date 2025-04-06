@@ -3,3 +3,5 @@ databaseChangeLog:
       file: db/changelog/db.changelog-create-user-table.yaml
   - include:
       file: db/changelog/db.changelog-create-contact-table.yaml
+  - include:
+      file: db/changelog/db.changelog-add-two-factor-enabled.yaml

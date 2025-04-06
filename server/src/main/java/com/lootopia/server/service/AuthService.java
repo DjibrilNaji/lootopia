@@ -1,14 +1,25 @@
 package com.lootopia.server.service;
 
 
+import com.lootopia.server.dto.LoginDto;
 import com.lootopia.server.dto.RegisterDto;
 import com.lootopia.server.entity.User;
 import com.lootopia.server.repository.UserRepository;
+import com.lootopia.server.security.CustomUserDetails;
+import jakarta.mail.MessagingException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import com.lootopia.server.service.JwtService;
+import com.lootopia.server.service.TwoFactorAuthenticationService;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,6 +30,7 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Stream;
 
 @Service
 public class AuthService {
@@ -30,13 +42,15 @@ public class AuthService {
 
     @Autowired
     private UserDetailsService userDetailsService;
-
+    private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final TwoFactorAuthenticationService twoFactorAuthenticationService;
 
-    public AuthService(PasswordEncoder passwordEncoder, PasswordEncoder passwordEncoder1) {
+    public AuthService(PasswordEncoder passwordEncoder, JwtService jwtService, PasswordEncoder passwordEncoder1, TwoFactorAuthenticationService twoFactorAuthenticationService) {
+        this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder1;
+        this.twoFactorAuthenticationService = twoFactorAuthenticationService;
     }
-
 
     @Transactional()
     public ResponseEntity<Map<String, String>> registerUser(RegisterDto registerDTO) {
@@ -122,6 +136,70 @@ public class AuthService {
         }
 
         return userDetailsService.loadUserByUsername(email);
+    }
+
+    public ResponseEntity<?> login(LoginDto request, HttpServletResponse response) {
+        try {
+            UserDetails userDetails = authenticate(request.getEmail(), request.getPassword());
+
+            if (userDetails instanceof CustomUserDetails customUser &&
+                    customUser.getUser().isTwoFactorEnabled()) {
+                twoFactorAuthenticationService.sendVerificationCode(request.getEmail());
+                return ResponseEntity.ok(Map.of(
+                        "message", "2FA requis. Un code a été envoyé à votre email.",
+                        "requires2fa", true
+                ));
+            }
+
+            String accessToken = jwtService.generateToken(userDetails);
+
+            ResponseCookie accessCookie = ResponseCookie.from("accessToken", accessToken)
+                    .httpOnly(true)
+                    .secure(true)
+                    .path("/")
+                    .maxAge(7 * 24 * 60 * 60) // 7 jours
+                    .sameSite("Strict")
+                    .build();
+
+            response.addHeader(HttpHeaders.SET_COOKIE, accessCookie.toString());
+
+            CustomUserDetails customUser = (CustomUserDetails) userDetails;
+
+            return ResponseEntity.ok()
+                    .body(Map.of(
+                            "token", accessToken,
+                            "customMessage", "Connexion réussie !",
+                            "user", customUser.getUser().getUsername()
+                    ));
+
+        } catch (UsernameNotFoundException | BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "Identifiants invalides."));
+        } catch (MessagingException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "Échec de l'envoi du code 2FA."));
+        }
+    }
+
+    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
+        Stream.of("accessToken", "JSESSIONID")
+                .forEach(cookieName -> {
+                    Cookie cookie = new Cookie(cookieName, null);
+                    cookie.setPath("/");
+                    cookie.setHttpOnly(true);
+                    cookie.setSecure(request.isSecure());
+                    cookie.setMaxAge(0);
+                    response.addCookie(cookie);
+                });
+
+        SecurityContextHolder.clearContext();
+
+        return ResponseEntity.ok()
+                .header("Cache-Control", "no-store")
+                .body(Map.of(
+                        "success", true,
+                        "message", "Déconnexion effectuée"
+                ));
     }
 
 }
