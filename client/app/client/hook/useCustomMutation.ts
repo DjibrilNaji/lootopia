@@ -26,11 +26,6 @@ export function useCustomMutation<TData, TVariables>(
         options.onError(error, variables, context)
       }
     },
-    onSuccess: (data: TData, variables: TVariables, context: unknown) => {
-      if (options?.onSuccess) {
-        options.onSuccess(data, variables, context)
-      }
-    },
     ...options
   })
 }

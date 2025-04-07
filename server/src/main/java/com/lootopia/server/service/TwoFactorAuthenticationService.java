@@ -63,13 +63,13 @@ public class TwoFactorAuthenticationService {
         }
     }
 
-    public ResponseEntity<?> handleVerifyCode(Map<String, String> request, HttpServletResponse response) {
+    public ResponseEntity<String> handleVerifyCode(Map<String, String> request, HttpServletResponse response) {
         String email = request.get("email");
         String inputCode = request.get("inputCode");
 
         if (email == null || inputCode == null) {
             return ResponseEntity.badRequest()
-                    .body(Map.of("message", "Les paramètres 'email' et 'inputCode' sont requis."));
+                    .body(Map.of("message", "Les paramètres 'email' et 'inputCode' sont requis.").toString());
         }
 
         boolean isValid = verifyCode(inputCode, email);
@@ -91,10 +91,10 @@ public class TwoFactorAuthenticationService {
             return ResponseEntity.ok(Map.of(
                     "customMessage", "Vérification réussie !",
                     "user", ((CustomUserDetails) userDetails).getUser().getUsername()
-            ));
+            ).toString());
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("message", "Code 2FA invalide."));
+                    .body(Map.of("message", "Code 2FA invalide.").toString());
         }
     }
 }

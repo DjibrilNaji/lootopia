@@ -4,24 +4,17 @@ import routes from "~/client/routes"
 import axiosClient from "~/client/utils/axiosInstance"
 import { ApiResponse, RegisterDto, LoginDto, ApiAuthResponse } from "~/types/api"
 
-const headers = (credentials: string) => ({
-  Authorization: `Basic ${credentials}`,
-  "Content-Type": "application/json"
-})
-
 export const register = async (registerDto: RegisterDto): Promise<ApiResponse> => {
-  const credentials = btoa(`admin:test`)
   const data = await axiosClient.post(routes.api.auth.register, registerDto, {
-    headers: headers(credentials)
+  withCredentials: true
   })
 
   return data.data
 }
 
 export const verifyAccount = async (userEmail: string, activationCode: string) => {
-  const credentials = btoa(`admin:test`)
   const data = await axiosClient.get(routes.api.auth.verify(userEmail, activationCode), {
-    headers: headers(credentials)
+    withCredentials: true
   })
 
   return data.data
@@ -29,10 +22,8 @@ export const verifyAccount = async (userEmail: string, activationCode: string) =
 
 export const login = async (loginDto: LoginDto): Promise<ApiAuthResponse> => {
   try {
-    const credentials = btoa(`admin:test`)
     const { data } = await axiosClient.post(routes.api.auth.login, loginDto, {
       withCredentials: true,
-      headers: headers(credentials)
     })
 
     return {
@@ -54,18 +45,17 @@ export const login = async (loginDto: LoginDto): Promise<ApiAuthResponse> => {
 
 export const logout = async (): Promise<{ success: boolean; message?: string }> => {
   try {
-    const credentials = btoa(`admin:test`)
     await axiosClient.post(
       routes.api.auth.logout,
       {},
       {
         withCredentials: true,
-        headers: headers(credentials)
       }
     )
 
     const cleanClient = () => {
-      ;["accessToken"].forEach((name) => {
+      const cookiesToClear = ["accessToken"]
+      cookiesToClear.forEach((name) => {
         document.cookie = `${name}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT; SameSite=Lax`
       })
       sessionStorage.clear()
@@ -99,16 +89,17 @@ export const logout = async (): Promise<{ success: boolean; message?: string }> 
 
 export const verifyMFA = async (email: string, inputCode: string): Promise<ApiAuthResponse> => {
   try {
-    const credentials = btoa(`admin:test`)
     const { data } = await axiosClient.post(
       routes.api.auth.verifyMFA(),
       { email, inputCode },
       {
-        headers: headers(credentials),
         withCredentials: true
       }
     )
-    return data
+    return {
+      ...data,
+       customMessage: data.customMessage || "Connexion réussie !"
+    }
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
       throw new Error(

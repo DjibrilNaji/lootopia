@@ -22,20 +22,24 @@ public class AuthController {
         return authService.registerUser(registerDto);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDto request, HttpServletResponse response) {
-        return authService.login(request, response);
-    }
-
-
-    @PostMapping("/logout")
-    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
-        return authService.logout(request, response);
-    }
-
-
     @GetMapping("/verify")
     public ResponseEntity<Map<String, String>> verifyAccount(@RequestParam String email, @RequestParam String activationCode) {
         return authService.verifyAccount(email, activationCode);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, String>> login(
+            @RequestBody LoginDto request,
+            HttpServletResponse response
+    ) {
+        return authService.login(request, response);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Map<String, String>> logout(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        return authService.logout(request, response);
     }
 }

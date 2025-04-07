@@ -67,7 +67,6 @@ if (isMFARequired) {
     <MFAVerificationForm
       email={email}
       setIsMFARequired={setIsMFARequired}
-      onBack={() => setIsMFARequired(false)}
     />
   )
 }

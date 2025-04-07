@@ -136,16 +136,17 @@ public class AuthService {
         return userDetailsService.loadUserByUsername(email);
     }
 
-    public ResponseEntity<?> login(LoginDto request, HttpServletResponse response) {
+    public ResponseEntity<Map<String, String>> login(LoginDto request, HttpServletResponse response) {
         try {
             UserDetails userDetails = authenticate(request.getEmail(), request.getPassword());
 
             if (userDetails instanceof CustomUserDetails customUser &&
                     customUser.getUser().isTwoFactorEnabled()) {
+
                 twoFactorAuthenticationService.sendVerificationCode(request.getEmail());
                 return ResponseEntity.ok(Map.of(
                         "message", "2FA requis. Un code a été envoyé à votre email.",
-                        "requires2fa", true
+                        "requires2fa", "true"
                 ));
             }
 
@@ -155,7 +156,7 @@ public class AuthService {
                     .httpOnly(true)
                     .secure(true)
                     .path("/")
-                    .maxAge(7 * 24 * 60 * 60) // 7 jours
+                    .maxAge(7 * 24 * 60 * 60)
                     .sameSite("Strict")
                     .build();
 
@@ -163,12 +164,11 @@ public class AuthService {
 
             CustomUserDetails customUser = (CustomUserDetails) userDetails;
 
-            return ResponseEntity.ok()
-                    .body(Map.of(
-                            "token", accessToken,
-                            "customMessage", "Connexion réussie !",
-                            "user", customUser.getUser().getUsername()
-                    ));
+            return ResponseEntity.ok(Map.of(
+                    "token", accessToken,
+                    "customMessage", "Connexion réussie !",
+                    "user", customUser.getUser().getUsername()
+            ));
 
         } catch (UsernameNotFoundException | BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -179,25 +179,23 @@ public class AuthService {
         }
     }
 
-    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
-        Stream.of("accessToken", "JSESSIONID")
-                .forEach(cookieName -> {
-                    Cookie cookie = new Cookie(cookieName, null);
-                    cookie.setPath("/");
-                    cookie.setHttpOnly(true);
-                    cookie.setSecure(request.isSecure());
-                    cookie.setMaxAge(0);
-                    response.addCookie(cookie);
-                });
+    public ResponseEntity<Map<String, String>> logout(HttpServletRequest request, HttpServletResponse response) {
+        Stream.of("accessToken", "JSESSIONID").forEach(cookieName -> {
+            Cookie cookie = new Cookie(cookieName, null);
+            cookie.setPath("/");
+            cookie.setHttpOnly(true);
+            cookie.setSecure(request.isSecure());
+            cookie.setMaxAge(0);
+            response.addCookie(cookie);
+        });
 
         SecurityContextHolder.clearContext();
 
         return ResponseEntity.ok()
                 .header("Cache-Control", "no-store")
                 .body(Map.of(
-                        "success", true,
+                        "success", "true",
                         "message", "Déconnexion effectuée"
                 ));
     }
-
 }

@@ -10,10 +10,9 @@ import { InputOTP, InputOTPSlot } from "~/client/components/ui/input-otp"
 interface MFAVerificationFormProps {
   email: string
   setIsMFARequired: (value: boolean) => void
-  onBack: () => void
 }
 
-export function MFAVerificationForm({ email, setIsMFARequired, onBack }: MFAVerificationFormProps) {
+export function MFAVerificationForm({ email, setIsMFARequired }: MFAVerificationFormProps) {
   const [inputCode, setInputCode] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
@@ -57,7 +56,7 @@ export function MFAVerificationForm({ email, setIsMFARequired, onBack }: MFAVeri
           <Button type="submit" disabled={isLoading || inputCode.length !== 6}>
             {isLoading ? <LoaderCircleIcon className="animate-spin" /> : "Vérifier"}
           </Button>
-          <Button variant="outline" onClick={onBack}>
+          <Button variant="outline" onClick={() => setIsMFARequired(false)}>
             Retour
           </Button>
         </div>
