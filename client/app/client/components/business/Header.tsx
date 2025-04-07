@@ -142,8 +142,8 @@ export function Navbar({
   const navigate = useNavigate()
 
   const handleLogout = async () => {
-      await logout() 
-      navigate(routes.home) 
+    await logout()
+    navigate(routes.home)
   }
   return (
     <section className="flex items-center justify-center border-b py-4">

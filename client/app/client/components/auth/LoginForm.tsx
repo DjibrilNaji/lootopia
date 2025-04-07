@@ -25,8 +25,8 @@ export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [isMFARequired, setIsMFARequired] = useState(false)
   const [email, setEmail] = useState("")
-  const navigate = useNavigate() 
-  
+  const navigate = useNavigate()
+
   const handleShowPassword = () => setShowPassword((prevState) => !prevState)
 
   const form = useForm<z.infer<typeof signInFormSchema>>({
@@ -37,40 +37,34 @@ export function LoginForm() {
     }
   })
 
- const { isLoading, mutate } = useCustomMutation(
-  async (values: SignInType) => {
-    return await login(values)
-  },
-  {
-    onSuccess: (data, values) => {
-      if (data?.requires2fa) {
-        setEmail(values.email)
-        setIsMFARequired(true)
-        toast.info("Un code MFA a été envoyé à votre email.")
-      } else {
-        toast.success(data?.customMessage)
-        navigate("/")
-      }
+  const { isLoading, mutate } = useCustomMutation(
+    async (values: SignInType) => {
+      return await login(values)
     },
-    onError: (error) => {
-      toast.error(error.message)
+    {
+      onSuccess: (data, values) => {
+        if (data?.requires2fa) {
+          setEmail(values.email)
+          setIsMFARequired(true)
+          toast.info("Un code MFA a été envoyé à votre email.")
+        } else {
+          toast.success(data?.customMessage)
+          navigate("/")
+        }
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      }
     }
-  }
-)
+  )
 
   const handleSubmit = (values: SignInType) => {
     mutate(values)
   }
 
-if (isMFARequired) {
-  return (
-    <MFAVerificationForm
-      email={email}
-      setIsMFARequired={setIsMFARequired}
-    />
-  )
-}
-
+  if (isMFARequired) {
+    return <MFAVerificationForm email={email} setIsMFARequired={setIsMFARequired} />
+  }
 
   return (
     <Form key="login" {...form}>

@@ -6,7 +6,7 @@ import { ApiResponse, RegisterDto, LoginDto, ApiAuthResponse } from "~/types/api
 
 export const register = async (registerDto: RegisterDto): Promise<ApiResponse> => {
   const data = await axiosClient.post(routes.api.auth.register, registerDto, {
-  withCredentials: true
+    withCredentials: true
   })
 
   return data.data
@@ -23,7 +23,7 @@ export const verifyAccount = async (userEmail: string, activationCode: string) =
 export const login = async (loginDto: LoginDto): Promise<ApiAuthResponse> => {
   try {
     const { data } = await axiosClient.post(routes.api.auth.login, loginDto, {
-      withCredentials: true,
+      withCredentials: true
     })
 
     return {
@@ -49,7 +49,7 @@ export const logout = async (): Promise<{ success: boolean; message?: string }> 
       routes.api.auth.logout,
       {},
       {
-        withCredentials: true,
+        withCredentials: true
       }
     )
 
@@ -98,7 +98,7 @@ export const verifyMFA = async (email: string, inputCode: string): Promise<ApiAu
     )
     return {
       ...data,
-       customMessage: data.customMessage || "Connexion réussie !"
+      customMessage: data.customMessage || "Connexion réussie !"
     }
   } catch (error: unknown) {
     if (error instanceof AxiosError) {

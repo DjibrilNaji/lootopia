@@ -24,7 +24,7 @@ export function MFAVerificationForm({ email, setIsMFARequired }: MFAVerification
     try {
       const response = await verifyMFA(email, inputCode)
       toast.success(response.customMessage)
-      setIsMFARequired(false) 
+      setIsMFARequired(false)
       navigate("/")
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Code invalide")
