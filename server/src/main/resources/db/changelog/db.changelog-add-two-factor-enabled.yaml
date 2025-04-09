@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250406-add-two-factor-enabled
+      author: Marvin
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: two_factor_enabled
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false

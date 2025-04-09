@@ -21,6 +21,42 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String fromEmail;
 
+    public void sendMailOtp(String to, String otp) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        try {
+            helper.setFrom(fromEmail);
+            helper.setTo(to);
+            helper.setSubject("Votre code de vérification OTP");
+
+            String htmlContent = """
+                    <div style="max-width: 400px; margin: 20px auto; padding: 20px; border-radius: 8px; text-align: center;">
+                     <img src="cid:lootopiaLogo" alt="Lootopia" style="width: 200px; height: auto;" />
+                     <h2 style="color: #333;">Votre code de vérification</h2>
+                     <p style="color: #666; font-size: 16px;">Bonjour\s""" + to + """
+                    <p style="color: #666; font-size: 16px;">
+                      Voici votre code de vérification OTP :
+                    </p>
+                    <div style="font-size: 24px; font-weight: bold; color: #007bff; margin: 20px 0;">
+                        """ + otp + """
+                    </div>
+                    <p style="color: #666; font-size: 16px;">
+                      Ce code est valable pendant 5 minutes. Ne le partagez avec personne.
+                    </p>
+                    <p style="margin-top: 20px; font-size: 12px; color: #888;">© 2025 Lootopia. Tous droits réservés.</p>
+                    </div>
+                    """;
+
+            helper.setText(htmlContent, true);
+            helper.addInline("lootopiaLogo", new ClassPathResource("static/chest.png"));
+            mailSender.send(message);
+        } catch (MailException | MessagingException e) {
+            LoggerFactory.getLogger(EmailService.class).error("Error for sending email: {}", e.getMessage());
+            throw e;
+        }
+    }
+
     public void registerEmail(String to, String activationCode) throws MessagingException {
         String verificationUrl = "http://localhost:3000/verify?email=" + to + "&activationCode=" + activationCode;
 
@@ -55,6 +91,7 @@ public class EmailService {
             mailSender.send(message);
         } catch (MailException | MessagingException e) {
             LoggerFactory.getLogger(EmailService.class).error("Error while sending email: {}", e.getMessage());
+            throw e;
         }
     }
 

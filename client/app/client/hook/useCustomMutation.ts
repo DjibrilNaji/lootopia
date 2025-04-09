@@ -7,9 +7,9 @@ export function useCustomMutation<TData, TVariables>(
   mutationFn: (variables: TVariables) => Promise<TData>,
   options?: UseMutationOptions<TData, ApiError, TVariables>
 ) {
-  return useMutation({
+  return useMutation<TData, ApiError, TVariables>({
     mutationFn,
-    onError: (error: ApiError) => {
+    onError: (error: ApiError, variables, context) => {
       let errorMessage = "Une erreur inattendue est survenue."
 
       if (error.response?.data?.customMessage) {
@@ -21,6 +21,10 @@ export function useCustomMutation<TData, TVariables>(
       }
 
       toast.error(errorMessage)
+
+      if (options?.onError) {
+        options.onError(error, variables, context)
+      }
     },
     ...options
   })

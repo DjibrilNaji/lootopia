@@ -1,10 +1,13 @@
 package com.lootopia.server.config;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 public class CORSConfig {
@@ -21,16 +24,16 @@ public class CORSConfig {
     private boolean credentials;
 
     @Bean
-    public WebMvcConfigurer cordConfig() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins(origins)
-                        .allowedMethods(methods)
-                        .allowedHeaders(headers)
-                        .allowCredentials(credentials);
-            }
-        };
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.setAllowedOrigins(origins.equals("*") ? List.of("*") : List.of(origins.split(",")));
+        configuration.setAllowedMethods(methods.equals("*") ? List.of("*") : List.of(methods.split(",")));
+        configuration.setAllowedHeaders(headers.equals("*") ? List.of("*") : List.of(headers.split(",")));
+        configuration.setAllowCredentials(credentials);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }

@@ -21,3 +21,12 @@ export const contactFormSchema = z
   .required()
 
 export type ContactFormType = z.infer<typeof contactFormSchema>
+
+export const signInFormSchema = z
+  .object({
+    email: emailValidator,
+    password: passwordValidator
+  })
+  .required()
+
+export type SignInType = z.infer<typeof signInFormSchema>

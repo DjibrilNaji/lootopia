@@ -1,4 +1,4 @@
-import { Link } from "@remix-run/react"
+import { Link, useOutletContext, useNavigate } from "@remix-run/react"
 import { Book, Menu, Sunset, Trees, Zap } from "lucide-react"
 
 import {
@@ -25,6 +25,7 @@ import {
   SheetTrigger
 } from "~/client/components/ui/sheet"
 import routes from "~/client/routes"
+import { logout } from "~/client/services/auth"
 
 interface MenuItem {
   title: string
@@ -54,9 +55,9 @@ interface NavbarProps {
       text: string
       url: string
     }
+    isAuthenticated?: boolean
   }
 }
-
 export function Navbar({
   logo = {
     src: routes.img.trasureNoBg,
@@ -137,6 +138,13 @@ export function Navbar({
     signup: { text: "S'inscrire", url: routes.auth.register }
   }
 }: NavbarProps) {
+  const { isLoggedIn } = useOutletContext<{ isLoggedIn: boolean }>()
+  const navigate = useNavigate()
+
+  const handleLogout = async () => {
+    await logout()
+    navigate(routes.home)
+  }
   return (
     <section className="flex items-center justify-center border-b py-4">
       <div className="container bg-white p-5">
@@ -153,19 +161,31 @@ export function Navbar({
             </div>
           </div>
           <div className="flex gap-2">
-            <Button
-              variant="outline"
-              className="mb-2 me-2 w-full rounded-lg px-5 py-2.5 text-center text-sm font-medium text-black hover:text-gray-400 focus:outline-none focus:ring-4 sm:w-auto"
-              asChild
-            >
-              <Link to={auth.login.url}>{auth.login.text}</Link>
-            </Button>
-            <Button
-              variant="outline"
-              className="asChild mb-2 me-2 w-full rounded-lg border border-yellow-400 px-5 py-2.5 text-center text-sm font-medium text-yellow-400 hover:bg-yellow-500 hover:text-white focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:border-yellow-300 dark:text-yellow-300 dark:hover:bg-yellow-400 dark:hover:text-white dark:focus:ring-yellow-900 sm:w-auto"
-            >
-              <Link to={auth.signup.url}>{auth.signup.text}</Link>
-            </Button>
+            {isLoggedIn ? (
+              <Button
+                variant="outline"
+                className="mb-2 me-2 w-full rounded-lg px-5 py-2.5 text-center text-sm font-medium text-black hover:text-gray-400 focus:outline-none focus:ring-4 sm:w-auto"
+                onClick={handleLogout}
+              >
+                Déconnexion
+              </Button>
+            ) : (
+              <>
+                <Button
+                  variant="outline"
+                  className="mb-2 me-2 w-full rounded-lg px-5 py-2.5 text-center text-sm font-medium text-black hover:text-gray-400 focus:outline-none focus:ring-4 sm:w-auto"
+                  asChild
+                >
+                  <Link to={auth.login.url}>{auth.login.text}</Link>
+                </Button>
+                <Button
+                  variant="outline"
+                  className="asChild mb-2 me-2 w-full rounded-lg border border-yellow-400 px-5 py-2.5 text-center text-sm font-medium text-yellow-400 hover:bg-yellow-500 hover:text-white focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:border-yellow-300 dark:text-yellow-300 dark:hover:bg-yellow-400 dark:hover:text-white dark:focus:ring-yellow-900 sm:w-auto"
+                >
+                  <Link to={auth.signup.url}>{auth.signup.text}</Link>
+                </Button>
+              </>
+            )}
           </div>
         </nav>
         <div className="block lg:hidden">
@@ -208,26 +228,33 @@ export function Navbar({
                       ))}
                     </div>
                   </div>
-
                   <div className="flex flex-col gap-3">
-                    <SheetClose asChild>
+                    {isLoggedIn ? (
                       <Button
                         variant="outline"
-                        className="mb-2 me-2 w-full rounded-lg border px-5 py-2.5 text-center text-sm font-medium text-black hover:text-gray-400 focus:outline-none focus:ring-4 sm:w-auto"
-                        asChild
+                        className="mb-2 me-2 w-full rounded-lg px-5 py-2.5 text-center text-sm font-medium text-black hover:text-gray-400 focus:outline-none focus:ring-4 sm:w-auto"
+                        onClick={handleLogout}
                       >
-                        <Link to={auth.login.url}>{auth.login.text}</Link>
+                        Déconnexion
                       </Button>
-                    </SheetClose>
-                    <SheetClose asChild>
-                      <Button
-                        variant="outline"
-                        className="mb-2 me-2 w-full rounded-lg border border-yellow-400 px-5 py-2.5 text-center text-sm font-medium text-yellow-400 hover:bg-yellow-500 hover:text-white focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:border-yellow-300 dark:text-yellow-300 dark:hover:bg-yellow-400 dark:hover:text-white dark:focus:ring-yellow-900 sm:w-auto"
-                        asChild
-                      >
-                        <Link to={auth.signup.url}>{auth.signup.text}</Link>
-                      </Button>
-                    </SheetClose>
+                    ) : (
+                      <>
+                        <Button
+                          variant="outline"
+                          className="mb-2 me-2 w-full rounded-lg border px-5 py-2.5 text-center text-sm font-medium text-black hover:text-gray-400 focus:outline-none focus:ring-4 sm:w-auto"
+                          asChild
+                        >
+                          <Link to={auth.login.url}>{auth.login.text}</Link>
+                        </Button>
+                        <Button
+                          variant="outline"
+                          className="mb-2 me-2 w-full rounded-lg border border-yellow-400 px-5 py-2.5 text-center text-sm font-medium text-yellow-400 hover:bg-yellow-500 hover:text-white focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:border-yellow-300 dark:text-yellow-300 dark:hover:bg-yellow-400 dark:hover:text-white dark:focus:ring-yellow-900 sm:w-auto"
+                          asChild
+                        >
+                          <Link to={auth.signup.url}>{auth.signup.text}</Link>
+                        </Button>
+                      </>
+                    )}
                   </div>
                 </div>
               </SheetContent>

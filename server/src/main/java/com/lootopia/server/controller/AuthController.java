@@ -1,22 +1,21 @@
 package com.lootopia.server.controller;
 
+import com.lootopia.server.dto.LoginDto;
 import com.lootopia.server.dto.RegisterDto;
-import com.lootopia.server.repository.UserRepository;
 import com.lootopia.server.service.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/auth")
 public class AuthController {
-    @Autowired
-    private AuthService authService;
 
     @Autowired
-    private UserRepository userRepository;
+    private AuthService authService;
 
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> register(@RequestBody RegisterDto registerDto) {
@@ -28,4 +27,19 @@ public class AuthController {
         return authService.verifyAccount(email, activationCode);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, String>> login(
+            @RequestBody LoginDto request,
+            HttpServletResponse response
+    ) {
+        return authService.login(request, response);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Map<String, String>> logout(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        return authService.logout(request, response);
+    }
 }

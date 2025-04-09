@@ -12,9 +12,12 @@ const routes = {
   },
   api: {
     auth: {
-      register: "/users/register",
+      register: "/auth/register",
+      login: "/auth/login",
+      logout: "/auth/logout",
       verify: (email: string, activationCode: string) =>
-        `/users/verify?email=${email}&activationCode=${activationCode}`
+        `/auth/verify?email=${email}&activationCode=${activationCode}`,
+      verifyMFA: () => "/2fa/verify-code"
     },
     contact: "/contact"
   }
