@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping
 public class EmailController {
 
-    @Autowired
-    private EmailService emailService;
+  @Autowired private EmailService emailService;
 
-    @GetMapping("/send-email")
-    public String sendEmail(@RequestParam String to) throws MessagingException {
-        return "Email sent successfully!";
-    }
+  @GetMapping("/send-email")
+  public String sendEmail(@RequestParam String to) throws MessagingException {
+    return "Email sent successfully!";
+  }
 }

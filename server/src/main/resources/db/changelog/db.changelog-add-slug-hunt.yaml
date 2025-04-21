@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250415-add-slug-hunt
+      author: Djibril
+      changes:
+        - addColumn:
+            tableName: hunt
+            columns:
+              - column:
+                  name: slug
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
