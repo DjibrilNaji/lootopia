@@ -5,3 +5,9 @@ databaseChangeLog:
       file: db/changelog/db.changelog-create-contact-table.yaml
   - include:
       file: db/changelog/db.changelog-add-two-factor-enabled.yaml
+  - include:
+      file: db/changelog/db.changelog-create-hunt-table.yaml
+  - include:
+      file: db/changelog/db.changelog-add-is-draft-hunt.yaml
+  - include:
+      file: db/changelog/db.changelog-add-slug-hunt.yaml

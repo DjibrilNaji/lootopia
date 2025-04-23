@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250415-add-is-draft-hunt
+      author: Djibril
+      changes:
+        - addColumn:
+            tableName: hunt
+            columns:
+              - column:
+                  name: is_draft
+                  type: boolean
+                  constraints:
+                    nullable: false

@@ -5,6 +5,12 @@ const routes = {
     register: "/register"
   },
   contact: "/contact",
+  profile: "/profile",
+  hunts: {
+    create: "/hunts/create",
+    list: "/hunts",
+    one: (name: string) => `/hunts/${name}`
+  },
   img: {
     lootopia: "/img/lootopia.png",
     notFound: "/img/404.png",
@@ -19,7 +25,12 @@ const routes = {
         `/auth/verify?email=${email}&activationCode=${activationCode}`,
       verifyMFA: () => "/2fa/verify-code"
     },
-    contact: "/contact"
+    contact: "/contact",
+    hunt: {
+      create: (email: string) => `/hunts/create?email=${email}`,
+      all: "/hunts",
+      one: (slug: string) => `/hunts/${slug}`
+    }
   }
 }
 

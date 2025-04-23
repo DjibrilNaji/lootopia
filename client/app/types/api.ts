@@ -8,6 +8,13 @@ export type ApiAuthResponse = {
   token: string
 }
 
+export type ApiListResponse<T> = {
+  count: number
+  data: T[]
+}
+
+export type HuntListResponse = ApiListResponse<HuntDto>
+
 export type ApiError = {
   response?: { data?: { customMessage?: string } }
   message?: string
@@ -29,4 +36,17 @@ export type ContactDto = {
 export type LoginDto = {
   email: string
   password: string
+}
+
+export type HuntDto = {
+  id?: number
+  name: string
+  description: string
+  startDate: Date
+  endDate: Date
+  privateHunt: boolean
+  latitude: number
+  longitude: number
+  draft: boolean
+  slug: string
 }

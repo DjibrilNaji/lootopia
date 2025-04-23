@@ -1,0 +1,59 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250320-create-hunt-table
+      author: Djibril
+      changes:
+        - createTable:
+            tableName: hunt
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: description
+                  type: varchar(255)
+              - column:
+                  name: start_date
+                  type: timestamp
+              - column:
+                  name: end_date
+                  type: timestamp
+              - column:
+                  name: status
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_private
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: latitude
+                  type: double
+              - column:
+                  name: longitude
+                  type: double
+              - column:
+                  name: created_by
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_hunt_users
+                    references: users(id)
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+                    updatable: false

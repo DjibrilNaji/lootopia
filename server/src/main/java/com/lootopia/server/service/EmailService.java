@@ -1,6 +1,7 @@
 package com.lootopia.server.service;
 
 import com.lootopia.server.entity.Contact;
+import com.lootopia.server.entity.Hunt;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.slf4j.LoggerFactory;
@@ -15,31 +16,35 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailService {
 
-    @Autowired
-    private JavaMailSender mailSender;
+  @Autowired private JavaMailSender mailSender;
 
-    @Value("${spring.mail.username}")
-    private String fromEmail;
+  @Value("${spring.mail.username}")
+  private String fromEmail;
 
-    public void sendMailOtp(String to, String otp) throws MessagingException {
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+  public void sendMailOtp(String to, String otp) throws MessagingException {
+    MimeMessage message = mailSender.createMimeMessage();
+    MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-        try {
-            helper.setFrom(fromEmail);
-            helper.setTo(to);
-            helper.setSubject("Votre code de vérification OTP");
+    try {
+      helper.setFrom(fromEmail);
+      helper.setTo(to);
+      helper.setSubject("Votre code de vérification OTP");
 
-            String htmlContent = """
+      String htmlContent =
+          """
                     <div style="max-width: 400px; margin: 20px auto; padding: 20px; border-radius: 8px; text-align: center;">
                      <img src="cid:lootopiaLogo" alt="Lootopia" style="width: 200px; height: auto;" />
                      <h2 style="color: #333;">Votre code de vérification</h2>
-                     <p style="color: #666; font-size: 16px;">Bonjour\s""" + to + """
+                     <p style="color: #666; font-size: 16px;">Bonjour\s"""
+              + to
+              + """
                     <p style="color: #666; font-size: 16px;">
                       Voici votre code de vérification OTP :
                     </p>
                     <div style="font-size: 24px; font-weight: bold; color: #007bff; margin: 20px 0;">
-                        """ + otp + """
+                        """
+              + otp
+              + """
                     </div>
                     <p style="color: #666; font-size: 16px;">
                       Ce code est valable pendant 5 minutes. Ne le partagez avec personne.
@@ -48,36 +53,43 @@ public class EmailService {
                     </div>
                     """;
 
-            helper.setText(htmlContent, true);
-            helper.addInline("lootopiaLogo", new ClassPathResource("static/chest.png"));
-            mailSender.send(message);
-        } catch (MailException | MessagingException e) {
-            LoggerFactory.getLogger(EmailService.class).error("Error for sending email: {}", e.getMessage());
-            throw e;
-        }
+      helper.setText(htmlContent, true);
+      helper.addInline("lootopiaLogo", new ClassPathResource("static/chest.png"));
+      mailSender.send(message);
+    } catch (MailException | MessagingException e) {
+      LoggerFactory.getLogger(EmailService.class)
+          .error("Error for sending email: {}", e.getMessage());
+      throw e;
     }
+  }
 
-    public void registerEmail(String to, String activationCode) throws MessagingException {
-        String verificationUrl = "http://localhost:3000/verify?email=" + to + "&activationCode=" + activationCode;
+  public void registerEmail(String to, String activationCode) throws MessagingException {
+    String verificationUrl =
+        "http://localhost:3000/verify?email=" + to + "&activationCode=" + activationCode;
 
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+    MimeMessage message = mailSender.createMimeMessage();
+    MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-        try {
-            helper.setFrom(fromEmail);
-            helper.setTo(to);
-            helper.setSubject("Activate your account");
+    try {
+      helper.setFrom(fromEmail);
+      helper.setTo(to);
+      helper.setSubject("Activate your account");
 
-            String htmlContent = """
+      String htmlContent =
+          """
                     <div style="max-width: 400px; margin: 20px auto; padding: 20px; border-radius: 8px; text-align: center;">
                      <img src="cid:lootopiaLogo" alt="Lootopia" style="width: 200px; height: auto;" />
                      <h2 style="color: #333;">Bienvenue sur Lootopia !</h2>
-                     <p style="color: #666; font-size: 16px;">Bonjour\s""" + to + """
+                     <p style="color: #666; font-size: 16px;">Bonjour\s"""
+              + to
+              + """
                     <p style="color: #666; font-size: 16px;">
                       Merci de vous être inscrit. Pour activer votre compte, veuillez
                       confirmer votre adresse e-mail en cliquant sur le bouton ci-dessous :
                     </p>
-                    <a href=""" + verificationUrl + """
+                    <a href="""
+              + verificationUrl
+              + """
                          target="_blank" style="display: inline-block; padding: 12px 24px; margin: 20px 0; font-size: 16px; color: #FFFFFF; background-color: #007bff; text-decoration: none; border-radius: 5px;">
                              Vérifier mon adresse
                      </a>
@@ -86,46 +98,54 @@ public class EmailService {
                     </div>
                     """;
 
-            helper.setText(htmlContent, true);
-            helper.addInline("lootopiaLogo", new ClassPathResource("static/chest.png"));
-            mailSender.send(message);
-        } catch (MailException | MessagingException e) {
-            LoggerFactory.getLogger(EmailService.class).error("Error while sending email: {}", e.getMessage());
-            throw e;
-        }
+      helper.setText(htmlContent, true);
+      helper.addInline("lootopiaLogo", new ClassPathResource("static/chest.png"));
+      mailSender.send(message);
+    } catch (MailException | MessagingException e) {
+      LoggerFactory.getLogger(EmailService.class)
+          .error("Error while sending email: {}", e.getMessage());
+      throw e;
     }
+  }
 
-    public void validateContactEmail(String to, Contact contact) throws MessagingException {
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+  public void validateContactEmail(String to, Contact contact) throws MessagingException {
+    MimeMessage message = mailSender.createMimeMessage();
+    MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-        try {
-            helper.setFrom(fromEmail);
-            helper.setTo(to);
-            helper.setSubject("Confirmation de réception - Lootopia");
+    try {
+      helper.setFrom(fromEmail);
+      helper.setTo(to);
+      helper.setSubject("Confirmation de réception - Lootopia");
 
-            String htmlContent = """
+      String htmlContent =
+          """
                     <div style="font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0">
                               <div style="max-width: 600px; margin: 20px auto; padding: 20px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
                                 <div style="text-align: center; padding: 20px 0; border-bottom: 2px solid #f0f0f0;">
                                   <h1>Confirmation de réception</h1>
                                 </div>
                                 <div style="padding: 20px 0;">
-                                  <p>Bonjour\s""" + contact.getName() + """
+                                  <p>Bonjour\s"""
+              + contact.getName()
+              + """
                     ,</p>
                     <p>
                       Nous avons bien reçu votre message. Notre équipe vous répondra dans les plus brefs délais.
                     </p>
-                    
+
                     <div style="background-color: #f8f9fa; padding: 15px; border-radius: 4px; margin: 15px 0;">
                       <h3>Détails de votre message :</h3>
-                      <p><strong>Sujet :</strong>\s""" + contact.getSubject() + """
+                      <p><strong>Sujet :</strong>\s"""
+              + contact.getSubject()
+              + """
                     </p>
                     <p><strong>Message :</strong></p>
-                    <p>""" + contact.getMessage() + """
+                    <p>"""
+              + contact.getMessage()
+              + """
                                   </p>
                                   </div>
-                    
+
                                   <p>Merci de nous avoir contacté !</p>
                                 </div>
                                 <div style="text-align: center; padding-top: 20px; color: #666; font-size: 12px;">
@@ -136,10 +156,82 @@ public class EmailService {
                             </div>
                     """;
 
-            helper.setText(htmlContent, true);
-            mailSender.send(message);
-        } catch (MailException | MessagingException e) {
-            LoggerFactory.getLogger(EmailService.class).error("Error while sending email: {}", e.getMessage());
-        }
+      helper.setText(htmlContent, true);
+      mailSender.send(message);
+    } catch (MailException | MessagingException e) {
+      LoggerFactory.getLogger(EmailService.class)
+          .error("Error while sending email: {}", e.getMessage());
     }
+  }
+
+  public void validateHuntCreationEmail(String email, String username, Hunt hunt)
+      throws MessagingException {
+    MimeMessage message = mailSender.createMimeMessage();
+    MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+    try {
+      helper.setFrom(fromEmail);
+      helper.setTo(email);
+      helper.setSubject("Confirmation de réception - Lootopia");
+
+      String htmlContent =
+          """
+                    <div style="font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0">
+                    <div
+                      style="
+                        max-width: 600px;
+                        margin: 20px auto;
+                        padding: 20px;
+                        background-color: #ffffff;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                      "
+                    >
+                      <div style="text-align: center; padding: 20px 0; border-bottom: 2px solid #f0f0f0">
+                        <h1>Confirmation de création de chasse</h1>
+                      </div>
+                      <div style="padding: 20px 0">
+                        <p>Bonjour\s"""
+              + username
+              + """
+                        ,</p>
+                        <p>Votre chasse au trésor a bien été enregistrée.</p>
+
+                        <div style="background-color: #f8f9fa; padding: 15px; border-radius: 4px; margin: 15px 0">
+                          <h3>Détails de votre chasse :</h3>
+                          <p><strong>Nom :</strong>\s"""
+              + hunt.getName()
+              + """
+                          </p>
+                          <p><strong>Description :</strong>\s"""
+              + hunt.getDescription()
+              + """
+                          </p>
+
+                          <p>Elle débutera le<strong>\s"""
+              + hunt.getStartDate().toLocalDate()
+              + """
+                            </strong>\set finira le<strong>\s"""
+              + hunt.getEndDate().toLocalDate()
+              + """
+                           </strong></p>
+                        </div>
+
+                        <p>Merci !</p>
+                      </div>
+                      <div style="text-align: center; padding-top: 20px; color: #666; font-size: 12px">
+                        <p>Cet email est une confirmation automatique, merci de ne pas y répondre.</p>
+                        <p>&copy; 2024 Lootopia. Tous droits réservés.</p>
+                      </div>
+                    </div>
+                  </div>
+                  """;
+
+      helper.setText(htmlContent, true);
+      mailSender.send(message);
+    } catch (MailException | MessagingException e) {
+      LoggerFactory.getLogger(EmailService.class)
+          .error("Error while sending email: {}", e.getMessage());
+    }
+  }
 }
