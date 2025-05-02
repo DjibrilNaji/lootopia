@@ -27,7 +27,7 @@ public class User {
 
   @Column private String activationCode;
 
-  private boolean twoFactorEnabled;
+  @Column private boolean twoFactorEnabled;
 
   @Column(name = "created_at", nullable = false, updatable = false)
   private LocalDateTime createdAt = LocalDateTime.now();
@@ -96,7 +96,5 @@ public class User {
     this.createdAt = createdAt;
   }
 
-  public void getSlug() {
-
-  }
+  public void getSlug() {}
 }

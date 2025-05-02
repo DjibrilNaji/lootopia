@@ -6,6 +6,7 @@ const routes = {
   },
   contact: "/contact",
   profile: "/profile",
+  account: "/account",
   hunts: {
     create: "/hunts/create",
     list: "/hunts",
@@ -23,13 +24,18 @@ const routes = {
       logout: "/auth/logout",
       verify: (email: string, activationCode: string) =>
         `/auth/verify?email=${email}&activationCode=${activationCode}`,
-      verifyMFA: () => "/2fa/verify-code"
+      verifyMFA: () => "/2fa/verify-code",
+      updatePassword: "/auth/update-password"
     },
     contact: "/contact",
     hunt: {
       create: (email: string) => `/hunts/create?email=${email}`,
       all: "/hunts",
       one: (slug: string) => `/hunts/${slug}`
+    },
+    user: {
+      update: (userId: number) => `/users/${userId}`,
+      one: (email: string) => `/users/${email}`
     }
   }
 }

@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface HuntRepository extends JpaRepository<Hunt, Long> {
   Optional<Hunt> findByName(String name);
+
   Optional<Hunt> findBySlug(String slug);
 }

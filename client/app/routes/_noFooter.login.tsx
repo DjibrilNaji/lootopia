@@ -10,7 +10,7 @@ export const meta: MetaFunction = () => {
 export default function LoginPage() {
   return (
     <LayoutAuthForm>
-      <LoginForm></LoginForm>
+      <LoginForm />
     </LayoutAuthForm>
   )
 }

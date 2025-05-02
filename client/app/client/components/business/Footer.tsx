@@ -37,10 +37,10 @@ export function Footer() {
     <footer className="mt-0 w-full">
       <div className="w-full px-4 py-16 md:px-6 lg:px-8">
         <div className="container mx-auto">
-          <div className="flex flex-col items-center justify-between gap-10 text-center lg:flex-row lg:text-left">
-            <div className="flex w-full max-w-96 shrink flex-col items-center justify-between gap-6 lg:items-start">
+          <div className="flex flex-col items-center justify-between gap-10 text-center md:flex-row md:text-left">
+            <div className="flex w-full max-w-96 shrink flex-col items-center justify-between gap-6 md:items-start">
               <div>
-                <span className="flex items-center justify-center gap-4 lg:justify-start">
+                <span className="flex items-center justify-center gap-4 md:justify-start">
                   <img src={routes.img.trasureNoBg} alt="logo" className="h-11" />
                   <p className="font-uniSansItalic text-4xl font-bold">Lootopia</p>
                 </span>
@@ -87,9 +87,9 @@ export function Footer() {
               ))}
             </div>
           </div>
-          <div className="mt-20 flex flex-col justify-between gap-4 border-t pt-8 text-center text-sm font-medium lg:flex-row lg:items-center lg:text-left">
+          <div className="mt-20 flex flex-col justify-between gap-4 border-t pt-8 text-center text-sm font-medium md:flex-row md:items-center md:text-left">
             <p>© 2025 Lootopia. Tous droits réservés.</p>
-            <ul className="flex justify-center gap-4 lg:justify-start">
+            <ul className="flex justify-center gap-4 md:justify-start">
               <li className="hover:text-gray-300">
                 <Link to="#"> Conditions d&apos;utilisation</Link>
               </li>

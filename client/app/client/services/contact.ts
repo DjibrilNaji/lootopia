@@ -4,7 +4,7 @@ import axiosClient from "../utils/axiosInstance"
 
 export const contact = async (contactDto: ContactDto): Promise<ApiResponse> => {
   const data = await axiosClient.post(routes.api.contact, contactDto, {
-        withCredentials: true
+    withCredentials: true
   })
 
   return data.data

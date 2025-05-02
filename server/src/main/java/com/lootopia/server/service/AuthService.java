@@ -2,6 +2,7 @@ package com.lootopia.server.service;
 
 import com.lootopia.server.dto.LoginDto;
 import com.lootopia.server.dto.RegisterDto;
+import com.lootopia.server.dto.UpdatePasswordDto;
 import com.lootopia.server.entity.User;
 import com.lootopia.server.repository.UserRepository;
 import com.lootopia.server.security.CustomUserDetails;
@@ -66,29 +67,46 @@ public class AuthService {
           .body(Map.of("customMessage", "Mot de passe invalide."));
     }
 
-    var userOpt = userRepository.findByEmail(registerDTO.getEmail());
-
-    if (userOpt.isPresent()) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-          .body(Map.of("customMessage", "Email déjà utilisé."));
-    }
-
-    userOpt = userRepository.findByUsername(registerDTO.getUsername());
-
-    if (userOpt.isPresent()) {
+    var existingByUsername = userRepository.findByUsername(registerDTO.getUsername());
+    if (existingByUsername.isPresent()) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST)
           .body(Map.of("customMessage", "Nom d'utilisateur déjà utilisé."));
     }
 
-    var activationCode = String.valueOf(new Random().nextInt(999999) + 100000);
+    var existingByEmail = userRepository.findByEmail(registerDTO.getEmail());
+    if (existingByEmail.isPresent()) {
+      var user = existingByEmail.get();
+      if (user.isActive()) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(Map.of("customMessage", "Email déjà utilisé."));
+      } else {
+        var activationCode = String.valueOf(new Random().nextInt(999999) + 100000);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encodedPassword = encoder.encode(registerDTO.getPassword());
 
+        user.setUsername(registerDTO.getUsername());
+        user.setPasswordHash(encodedPassword);
+        user.setActivationCode(activationCode);
+
+        try {
+          userRepository.save(user);
+          emailService.registerEmail(user.getEmail(), activationCode);
+          return ResponseEntity.ok(
+              Map.of("customMessage", "Un email de confirmation a été renvoyé."));
+        } catch (Exception e) {
+          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body(Map.of("customMessage", "Erreur lors de la réactivation du compte."));
+        }
+      }
+    }
+
+    var activationCode = String.valueOf(new Random().nextInt(999999) + 100000);
     var user = new User();
     user.setUsername(registerDTO.getUsername());
     user.setEmail(registerDTO.getEmail());
 
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     String result = encoder.encode(registerDTO.getPassword());
-
     user.setPasswordHash(result);
     user.setActivationCode(activationCode);
 
@@ -149,6 +167,12 @@ public class AuthService {
 
   public ResponseEntity<Map<String, String>> login(LoginDto request, HttpServletResponse response) {
     try {
+      var user = userRepository.findByEmail(request.getEmail());
+
+      if (user.isPresent() && !user.get().isActive()) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+            .body(Map.of("message", "Compte non activé. Vérifiez votre email."));
+      }
       UserDetails userDetails = authenticate(request.getEmail(), request.getPassword());
 
       if (userDetails instanceof CustomUserDetails customUser
@@ -215,5 +239,44 @@ public class AuthService {
             Map.of(
                 "success", "true",
                 "message", "Déconnexion effectuée"));
+  }
+
+  public ResponseEntity<Map<String, String>> updatePassword(UpdatePasswordDto updatePasswordDto) {
+    try {
+      User user =
+          userRepository
+              .findByEmail(updatePasswordDto.getEmail())
+              .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
+
+      if (!passwordEncoder.matches(updatePasswordDto.getOldPassword(), user.getPasswordHash())) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(Map.of("customMessage", "Le mot de passe actuel est incorrect."));
+      }
+
+      if (!updatePasswordDto.getNewPassword().equals(updatePasswordDto.getConfirmPassword())) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(Map.of("customMessage", "Les mots de passe ne correspondent pas."));
+      }
+
+      if (updatePasswordDto.getNewPassword().length() < 8) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(Map.of("customMessage", "Le mot de passe doit contenir au moins 8 caractères."));
+      }
+
+      String hashedNewPassword = passwordEncoder.encode(updatePasswordDto.getNewPassword());
+      user.setPasswordHash(hashedNewPassword);
+      userRepository.save(user);
+
+      return ResponseEntity.ok(Map.of("customMessage", "Mot de passe modifié avec succès."));
+    } catch (UsernameNotFoundException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND)
+          .body(Map.of("customMessage", "Utilisateur non trouvé."));
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body(
+              Map.of(
+                  "customMessage",
+                  "Une erreur est survenue lors de la modification du mot de passe."));
+    }
   }
 }

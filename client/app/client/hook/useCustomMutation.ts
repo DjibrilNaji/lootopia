@@ -40,8 +40,6 @@ export function useCustomQuery<TData>(
     queryFn: () => queryFn({ queryKey }),
     retry: 0,
     onError: (error: ApiError) => {
-      console.log("Error in useCustomQuery:", error)
-
       let errorMessage = "Une erreur inattendue est survenue."
 
       if (error.response?.data?.customMessage) {
