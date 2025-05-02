@@ -38,8 +38,10 @@ const data = {
     {
       title: "Paramètres avancés",
       items: [
-        { title: "Désactiver le compte", tab: AccountTabsEnum.ACCOUNT_DESACTIVATION },
-        { title: "Supprimer le compte", tab: AccountTabsEnum.ACCOUNT_DELETION }
+        {
+          title: "Désactiver/Supprimer le compte",
+          tab: AccountTabsEnum.ACCOUNT_DESACTIVATION_DELETION
+        }
       ]
     }
   ]

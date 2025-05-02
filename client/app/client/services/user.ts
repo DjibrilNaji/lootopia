@@ -6,8 +6,6 @@ export const update = async (
   userId: number,
   userDto: Pick<UserDto, "username" | "email">
 ): Promise<ApiResponse> => {
-  console.log("update user", userId, userDto)
-
   const data = await axiosClient.put(routes.api.user.update(userId), userDto, {
     withCredentials: true
   })

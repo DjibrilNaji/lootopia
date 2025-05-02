@@ -1,17 +1,10 @@
 import { LoaderFunctionArgs } from "@remix-run/node"
 import { json, Link, useLoaderData } from "@remix-run/react"
 import { useState } from "react"
+import DesactivationPage from "~/client/components/account/DesactivationPage"
 import { PersonalInfoForm } from "~/client/components/account/PersonalInfoForm"
 import { UpdatePasswordForm } from "~/client/components/account/UpdatePasswordForm"
 import { AppSidebar } from "~/client/components/AppSidebar"
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator
-} from "~/client/components/ui/breadcrumb"
 import { Button } from "~/client/components/ui/button"
 import { Separator } from "~/client/components/ui/separator"
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "~/client/components/ui/sidebar"
@@ -59,17 +52,9 @@ export default function Page() {
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="#">Vue d&apos;ensemble</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
+          <p>
+            <span className="text-xl font-bold">Mon compte</span>
+          </p>
         </header>
 
         {accountTab === AccountTabsEnum.OVERVIEW && <div>Overview</div>}
@@ -77,8 +62,9 @@ export default function Page() {
         {accountTab === AccountTabsEnum.PERSONAL_INFO && <PersonalInfoForm user={data} />}
         {accountTab === AccountTabsEnum.UPDATE_PASSWORD && <UpdatePasswordForm email={userEmail} />}
         {accountTab === AccountTabsEnum.NOTIFICATIONS && <div>Notification</div>}
-        {accountTab === AccountTabsEnum.ACCOUNT_DESACTIVATION && <div>Account desactivation</div>}
-        {accountTab === AccountTabsEnum.ACCOUNT_DELETION && <div>Delete account</div>}
+        {accountTab === AccountTabsEnum.ACCOUNT_DESACTIVATION_DELETION && (
+          <DesactivationPage email={userEmail} />
+        )}
       </SidebarInset>
     </SidebarProvider>
   )

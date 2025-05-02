@@ -1,5 +1,6 @@
 package com.lootopia.server.controller;
 
+import com.lootopia.server.dto.DesactivationRequestDto;
 import com.lootopia.server.dto.LoginDto;
 import com.lootopia.server.dto.RegisterDto;
 import com.lootopia.server.dto.UpdatePasswordDto;
@@ -44,5 +45,17 @@ public class AuthController {
   public ResponseEntity<Map<String, String>> updatePassword(
       @RequestBody UpdatePasswordDto updatePasswordDto) {
     return authService.updatePassword(updatePasswordDto);
+  }
+
+  @PostMapping("/desactivate")
+  public ResponseEntity<Map<String, String>> desactivateAccount(
+      @RequestBody DesactivationRequestDto request) {
+    return authService.desactivateAccount(request);
+  }
+
+  @PostMapping("/delete")
+  public ResponseEntity<Map<String, String>> deleteAccount(
+      @RequestBody DesactivationRequestDto request) {
+    return authService.deleteAccount(request);
   }
 }

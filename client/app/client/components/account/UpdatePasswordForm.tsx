@@ -69,7 +69,7 @@ export function UpdatePasswordForm({ email }: UpdatePasswordFormProps) {
         onSubmit={form.handleSubmit(handleSubmit)}
         className="m-10 flex flex-col space-y-6 lg:w-3/4"
       >
-        <h1 className="text-xl font-semibold">Mot de passe oublié</h1>
+        <h1 className="text-xl font-semibold">Nouveau mot de passe</h1>
         <p className="text-sm text-muted-foreground">
           Vous pouvez modifier votre mot de passe ici. Veuillez entrer votre ancien mot de passe et
           le nouveau mot de passe que vous souhaitez utiliser.
