@@ -2,7 +2,14 @@ import { AxiosError } from "axios"
 
 import routes from "~/client/routes"
 import axiosClient from "~/client/utils/axiosInstance"
-import { ApiAuthResponse, ApiResponse, LoginDto, RegisterDto, UpdatePasswordDto } from "~/types/api"
+import {
+  ApiAuthResponse,
+  ApiResponse,
+  DesactivationRequestDto,
+  LoginDto,
+  RegisterDto,
+  UpdatePasswordDto
+} from "~/types/api"
 
 export const register = async (registerDto: RegisterDto): Promise<ApiResponse> => {
   const data = await axiosClient.post(routes.api.auth.register, registerDto, {
@@ -14,6 +21,26 @@ export const register = async (registerDto: RegisterDto): Promise<ApiResponse> =
 
 export const verifyAccount = async (userEmail: string, activationCode: string) => {
   const data = await axiosClient.get(routes.api.auth.verify(userEmail, activationCode), {
+    withCredentials: true
+  })
+
+  return data.data
+}
+
+export const desactivateAccount = async (
+  desactivationRequestDto: DesactivationRequestDto
+): Promise<ApiResponse> => {
+  const data = await axiosClient.post(routes.api.auth.desactivate, desactivationRequestDto, {
+    withCredentials: true
+  })
+
+  return data.data
+}
+
+export const deleteAccount = async (
+  desactivationRequestDto: DesactivationRequestDto
+): Promise<ApiResponse> => {
+  const data = await axiosClient.post(routes.api.auth.delete, desactivationRequestDto, {
     withCredentials: true
   })
 

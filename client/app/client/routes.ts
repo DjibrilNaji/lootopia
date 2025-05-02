@@ -22,6 +22,8 @@ const routes = {
       register: "/auth/register",
       login: "/auth/login",
       logout: "/auth/logout",
+      desactivate: "/auth/desactivate",
+      delete: "/auth/delete",
       verify: (email: string, activationCode: string) =>
         `/auth/verify?email=${email}&activationCode=${activationCode}`,
       verifyMFA: () => "/2fa/verify-code",

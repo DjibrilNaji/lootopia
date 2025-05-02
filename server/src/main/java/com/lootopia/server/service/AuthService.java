@@ -1,9 +1,11 @@
 package com.lootopia.server.service;
 
+import com.lootopia.server.dto.DesactivationRequestDto;
 import com.lootopia.server.dto.LoginDto;
 import com.lootopia.server.dto.RegisterDto;
 import com.lootopia.server.dto.UpdatePasswordDto;
 import com.lootopia.server.entity.User;
+import com.lootopia.server.repository.HuntRepository;
 import com.lootopia.server.repository.UserRepository;
 import com.lootopia.server.security.CustomUserDetails;
 import jakarta.mail.MessagingException;
@@ -32,6 +34,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthService {
   @Autowired private UserRepository userRepository;
+
+  @Autowired private HuntRepository huntRepository;
 
   @Autowired private EmailService emailService;
 
@@ -278,5 +282,39 @@ public class AuthService {
                   "customMessage",
                   "Une erreur est survenue lors de la modification du mot de passe."));
     }
+  }
+
+  public ResponseEntity<Map<String, String>> desactivateAccount(DesactivationRequestDto request) {
+    User user =
+        userRepository
+            .findByEmail(request.getEmail())
+            .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
+
+    if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+          .body(Map.of("customMessage", "Mot de passe incorrect"));
+    }
+
+    user.setActive(false);
+    userRepository.save(user);
+
+    return ResponseEntity.ok(Map.of("customMessage", "Compte désactivé avec succès"));
+  }
+
+  public ResponseEntity<Map<String, String>> deleteAccount(DesactivationRequestDto request) {
+    User user =
+        userRepository
+            .findByEmail(request.getEmail())
+            .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
+
+    if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+          .body(Map.of("customMessage", "Mot de passe incorrect"));
+    }
+
+    huntRepository.deleteByCreatedBy(user.getId());
+    userRepository.deleteById(user.getId());
+
+    return ResponseEntity.ok(Map.of("customMessage", "Compte désactivé avec succès"));
   }
 }

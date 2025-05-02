@@ -16,6 +16,8 @@ export const meta: MetaFunction = () => {
 export default function Index() {
   const [searchParams] = useSearchParams()
   const updateEmail = searchParams.get("updateEmail")
+  const desactivateAccount = searchParams.get("desactivateAccount")
+  const deleteAccount = searchParams.get("deleteAccount")
 
   return (
     <Wrapper isLoading={false} error={null}>
@@ -24,6 +26,26 @@ export default function Index() {
           <Check />
           <p className="flex flex-col">
             Votre adresse e-mail a été mise à jour avec succès. <span>Veuillez le vérifier.</span>
+          </p>
+        </div>
+      )}
+
+      {desactivateAccount === "success" && (
+        <div className="flex items-center gap-5 bg-green-500 px-2 py-5 font-semibold text-white">
+          <Check />
+          <p className="flex flex-col">
+            Votre compte a été désactivé avec succès.
+            <span>Nous sommes désolés de vous voir partir.</span>
+          </p>
+        </div>
+      )}
+
+      {deleteAccount === "success" && (
+        <div className="flex items-center gap-5 bg-red-500 px-2 py-5 font-semibold text-white">
+          <Check />
+          <p className="flex flex-col">
+            Votre compte a été supprimé avec succès.
+            <span>Nous sommes désolés de vous voir partir.</span>
           </p>
         </div>
       )}

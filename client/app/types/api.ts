@@ -66,3 +66,8 @@ export type UpdatePasswordDto = {
   newPassword: string
   confirmPassword: string
 }
+
+export type DesactivationRequestDto = {
+  email: string
+  password: string
+}
