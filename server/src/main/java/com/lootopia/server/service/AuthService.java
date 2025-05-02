@@ -66,29 +66,47 @@ public class AuthService {
           .body(Map.of("customMessage", "Mot de passe invalide."));
     }
 
-    var userOpt = userRepository.findByEmail(registerDTO.getEmail());
-
-    if (userOpt.isPresent()) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-          .body(Map.of("customMessage", "Email déjà utilisé."));
-    }
-
-    userOpt = userRepository.findByUsername(registerDTO.getUsername());
-
-    if (userOpt.isPresent()) {
+    var existingByUsername = userRepository.findByUsername(registerDTO.getUsername());
+    if (existingByUsername.isPresent()) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST)
           .body(Map.of("customMessage", "Nom d'utilisateur déjà utilisé."));
     }
 
-    var activationCode = String.valueOf(new Random().nextInt(999999) + 100000);
+    var existingByEmail = userRepository.findByEmail(registerDTO.getEmail());
+    if (existingByEmail.isPresent()) {
+      var user = existingByEmail.get();
+      if (user.isActive()) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(Map.of("customMessage", "Email déjà utilisé."));
+      } else {
+        var activationCode = String.valueOf(new Random().nextInt(999999) + 100000);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encodedPassword = encoder.encode(registerDTO.getPassword());
 
+        user.setUsername(
+            registerDTO.getUsername());
+        user.setPasswordHash(encodedPassword);
+        user.setActivationCode(activationCode);
+
+        try {
+          userRepository.save(user);
+          emailService.registerEmail(user.getEmail(), activationCode);
+          return ResponseEntity.ok(
+              Map.of("customMessage", "Un email de confirmation a été renvoyé."));
+        } catch (Exception e) {
+          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body(Map.of("customMessage", "Erreur lors de la réactivation du compte."));
+        }
+      }
+    }
+
+    var activationCode = String.valueOf(new Random().nextInt(999999) + 100000);
     var user = new User();
     user.setUsername(registerDTO.getUsername());
     user.setEmail(registerDTO.getEmail());
 
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     String result = encoder.encode(registerDTO.getPassword());
-
     user.setPasswordHash(result);
     user.setActivationCode(activationCode);
 
@@ -149,6 +167,12 @@ public class AuthService {
 
   public ResponseEntity<Map<String, String>> login(LoginDto request, HttpServletResponse response) {
     try {
+      var user = userRepository.findByEmail(request.getEmail());
+
+      if (user.isPresent() && !user.get().isActive()) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+            .body(Map.of("message", "Compte non activé. Vérifiez votre email."));
+      }
       UserDetails userDetails = authenticate(request.getEmail(), request.getPassword());
 
       if (userDetails instanceof CustomUserDetails customUser

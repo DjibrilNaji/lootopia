@@ -59,3 +59,12 @@ export const huntDraftSchema = z.object({
   privateHunt: z.boolean().optional(),
   draft: z.literal(true)
 })
+
+export const updateUserSchema = z
+  .object({
+    username: stringValidator.min(5, "Le nom d'utilisateur doit contenir au moins 5 caractères"),
+    email: emailValidator
+  })
+  .required()
+
+export type UpdateUserType = z.infer<typeof updateUserSchema>

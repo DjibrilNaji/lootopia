@@ -2,7 +2,7 @@ import { AxiosError } from "axios"
 
 import routes from "~/client/routes"
 import axiosClient from "~/client/utils/axiosInstance"
-import { ApiResponse, RegisterDto, LoginDto, ApiAuthResponse } from "~/types/api"
+import { ApiAuthResponse, ApiResponse, LoginDto, RegisterDto } from "~/types/api"
 
 export const register = async (registerDto: RegisterDto): Promise<ApiResponse> => {
   const data = await axiosClient.post(routes.api.auth.register, registerDto, {
@@ -43,7 +43,9 @@ export const login = async (loginDto: LoginDto): Promise<ApiAuthResponse> => {
   }
 }
 
-export const logout = async (): Promise<{ success: boolean; message?: string }> => {
+export const logout = async (
+  otherSearchParam?: string
+): Promise<{ success: boolean; message?: string }> => {
   try {
     await axiosClient.post(
       routes.api.auth.logout,
@@ -63,7 +65,7 @@ export const logout = async (): Promise<{ success: boolean; message?: string }> 
 
     if (typeof window !== "undefined") {
       cleanClient()
-      window.location.href = `${routes.home}?logout=success`
+      window.location.href = `${routes.home}?logout=success${otherSearchParam ? `&${otherSearchParam}` : ""}`
       return { success: true }
     }
 

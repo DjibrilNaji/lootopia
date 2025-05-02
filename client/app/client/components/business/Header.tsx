@@ -1,4 +1,4 @@
-import { Link, useNavigate, useOutletContext } from "@remix-run/react"
+import { Link, NavLink, useNavigate, useOutletContext } from "@remix-run/react"
 import { Book, Menu, Sunset, Trees, Zap } from "lucide-react"
 
 import {
@@ -26,6 +26,7 @@ import {
 } from "~/client/components/ui/sheet"
 import routes from "~/client/routes"
 import { logout } from "~/client/services/auth"
+import { AvatarComponent } from "../AvatarComponent"
 
 interface MenuItem {
   title: string
@@ -177,6 +178,9 @@ export function Navbar({
                 >
                   Déconnexion
                 </Button>
+                <NavLink to={routes.account}>
+                  <AvatarComponent />
+                </NavLink>
               </>
             ) : (
               <>
@@ -209,7 +213,7 @@ export function Navbar({
                   <Menu className="size-4" />
                 </Button>
               </SheetTrigger>
-              <SheetContent className="overflow-y-auto">
+              <SheetContent className="flex flex-col overflow-y-auto">
                 <SheetHeader>
                   <SheetTitle>
                     <Link to={routes.home} className="flex items-center gap-2">
@@ -218,6 +222,7 @@ export function Navbar({
                     </Link>
                   </SheetTitle>
                 </SheetHeader>
+
                 <div className="my-6 flex flex-col gap-6">
                   <Accordion type="single" collapsible className="flex w-full flex-col gap-4">
                     {menu.map((item) => renderMobileMenuItem(item))}
@@ -278,6 +283,16 @@ export function Navbar({
                     )}
                   </div>
                 </div>
+
+                <NavLink
+                  to={routes.account}
+                  className="mt-auto flex items-center justify-center gap-2"
+                >
+                  <AvatarComponent />
+                  <div className="flex flex-col gap-0.5 leading-none">
+                    <span className="font-semibold">Djibril Naji</span>
+                  </div>
+                </NavLink>
               </SheetContent>
             </Sheet>
           </div>

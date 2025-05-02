@@ -164,6 +164,53 @@ public class EmailService {
     }
   }
 
+  public void updateEmail(String to, String activationCode) throws MessagingException {
+    String verificationUrl =
+        "http://localhost:3000/verify?email=" + to + "&activationCode=" + activationCode;
+
+    MimeMessage message = mailSender.createMimeMessage();
+    MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+    try {
+      helper.setFrom(fromEmail);
+      helper.setTo(to);
+      helper.setSubject("Activate your account");
+
+      String htmlContent =
+          """
+              <div style="max-width: 400px; margin: 20px auto; padding: 20px; border-radius: 8px; text-align: center;">
+                <img src="cid:lootopiaLogo" alt="Lootopia" style="width: 200px; height: auto;" />
+                <h2 style="color: #333;">Confirmation de votre nouvelle adresse email</h2>
+                <p style="color: #666; font-size: 16px;">Bonjour\s"""
+              + to
+              + """
+          <p style="color: #666; font-size: 16px;">
+            Vous avez demandé à modifier votre adresse email sur Lootopia.
+            Veuillez confirmer ce changement en cliquant sur le bouton ci-dessous :
+          </p>
+          <a href="""
+              + verificationUrl
+              + """
+             target="_blank" style="display: inline-block; padding: 12px 24px; margin: 20px 0; font-size: 16px; color: #FFFFFF; background-color: #007bff; text-decoration: none; border-radius: 5px;">
+                 Confirmer mon adresse
+         </a>
+         <p style="color: #666; font-size: 16px;">
+           Si vous n'avez pas fait cette demande, vous pouvez ignorer cet email en toute sécurité.
+         </p>
+         <p style="margin-top: 20px; font-size: 12px; color: #888;">© 2025 Lootopia. Tous droits réservés.</p>
+        </div>
+        """;
+
+      helper.setText(htmlContent, true);
+      helper.addInline("lootopiaLogo", new ClassPathResource("static/chest.png"));
+      mailSender.send(message);
+    } catch (MailException | MessagingException e) {
+      LoggerFactory.getLogger(EmailService.class)
+          .error("Error while sending email: {}", e.getMessage());
+      throw e;
+    }
+  }
+
   public void validateHuntCreationEmail(String email, String username, Hunt hunt)
       throws MessagingException {
     MimeMessage message = mailSender.createMimeMessage();

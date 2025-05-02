@@ -17,12 +17,7 @@ export const getHunts = async (): Promise<HuntListResponse> => {
 }
 
 export const getHunt = async (slug: string): Promise<HuntDto> => {
-  console.log(`Fetching hunt with name: ${slug}`)
-  console.log(routes.api.hunt.one(slug))
-
   const response = await axiosClient.get(routes.api.hunt.one(slug), { withCredentials: true })
-
-  console.log("Response data:", response)
 
   return response.data.data
 }

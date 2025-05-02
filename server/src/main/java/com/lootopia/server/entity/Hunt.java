@@ -17,8 +17,7 @@ public class Hunt {
   @Column(nullable = false, unique = true, length = 100)
   private String slug;
 
-  @Column
-  private String description;
+  @Column private String description;
 
   @Column(name = "start_date")
   private LocalDateTime startDate;

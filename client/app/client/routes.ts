@@ -6,6 +6,7 @@ const routes = {
   },
   contact: "/contact",
   profile: "/profile",
+  account: "/account",
   hunts: {
     create: "/hunts/create",
     list: "/hunts",
@@ -30,6 +31,10 @@ const routes = {
       create: (email: string) => `/hunts/create?email=${email}`,
       all: "/hunts",
       one: (slug: string) => `/hunts/${slug}`
+    },
+    user: {
+      update: (userId: number) => `/users/${userId}`,
+      one: (email: string) => `/users/${email}`
     }
   }
 }

@@ -50,3 +50,12 @@ export type HuntDto = {
   draft: boolean
   slug: string
 }
+
+export type UserDto = {
+  id: number
+  username: string
+  email: string
+  isActive: boolean
+  twoFactorEnabled?: boolean
+  createdAt: Date
+}

@@ -1,11 +1,12 @@
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Link, useNavigate } from "@remix-run/react"
 import { EyeIcon, EyeOffIcon, LoaderCircleIcon } from "lucide-react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useNavigate } from "@remix-run/react"
 import { z } from "zod"
 
+import { MFAVerificationForm } from "~/client/components/auth/MFAVerificationForm"
 import { Button } from "~/client/components/ui/button"
 import {
   Form,
@@ -19,7 +20,6 @@ import { Input } from "~/client/components/ui/input"
 import { useCustomMutation } from "~/client/hook/useCustomMutation"
 import { login } from "~/client/services/auth"
 import { signInFormSchema, SignInType } from "~/types/form"
-import { MFAVerificationForm } from "~/client/components/auth/MFAVerificationForm"
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false)
@@ -112,6 +112,14 @@ export function LoginForm() {
             </FormItem>
           )}
         />
+
+        <Link
+          to="/auth/forgot-password"
+          className="text-sm font-semibold text-brown hover:underline"
+        >
+          Mot de passe oublié ?
+        </Link>
+
         <Button type="submit" disabled={isLoading}>
           {isLoading && <LoaderCircleIcon className="-ms-1 animate-spin" size={16} />}
           Se connecter
