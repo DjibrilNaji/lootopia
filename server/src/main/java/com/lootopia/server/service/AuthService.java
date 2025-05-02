@@ -2,6 +2,7 @@ package com.lootopia.server.service;
 
 import com.lootopia.server.dto.LoginDto;
 import com.lootopia.server.dto.RegisterDto;
+import com.lootopia.server.dto.UpdatePasswordDto;
 import com.lootopia.server.entity.User;
 import com.lootopia.server.repository.UserRepository;
 import com.lootopia.server.security.CustomUserDetails;
@@ -83,8 +84,7 @@ public class AuthService {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(registerDTO.getPassword());
 
-        user.setUsername(
-            registerDTO.getUsername());
+        user.setUsername(registerDTO.getUsername());
         user.setPasswordHash(encodedPassword);
         user.setActivationCode(activationCode);
 
@@ -239,5 +239,44 @@ public class AuthService {
             Map.of(
                 "success", "true",
                 "message", "Déconnexion effectuée"));
+  }
+
+  public ResponseEntity<Map<String, String>> updatePassword(UpdatePasswordDto updatePasswordDto) {
+    try {
+      User user =
+          userRepository
+              .findByEmail(updatePasswordDto.getEmail())
+              .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
+
+      if (!passwordEncoder.matches(updatePasswordDto.getOldPassword(), user.getPasswordHash())) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(Map.of("customMessage", "Le mot de passe actuel est incorrect."));
+      }
+
+      if (!updatePasswordDto.getNewPassword().equals(updatePasswordDto.getConfirmPassword())) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(Map.of("customMessage", "Les mots de passe ne correspondent pas."));
+      }
+
+      if (updatePasswordDto.getNewPassword().length() < 8) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(Map.of("customMessage", "Le mot de passe doit contenir au moins 8 caractères."));
+      }
+
+      String hashedNewPassword = passwordEncoder.encode(updatePasswordDto.getNewPassword());
+      user.setPasswordHash(hashedNewPassword);
+      userRepository.save(user);
+
+      return ResponseEntity.ok(Map.of("customMessage", "Mot de passe modifié avec succès."));
+    } catch (UsernameNotFoundException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND)
+          .body(Map.of("customMessage", "Utilisateur non trouvé."));
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body(
+              Map.of(
+                  "customMessage",
+                  "Une erreur est survenue lors de la modification du mot de passe."));
+    }
   }
 }

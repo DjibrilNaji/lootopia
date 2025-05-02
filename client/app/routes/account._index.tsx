@@ -2,6 +2,7 @@ import { LoaderFunctionArgs } from "@remix-run/node"
 import { json, Link, useLoaderData } from "@remix-run/react"
 import { useState } from "react"
 import { PersonalInfoForm } from "~/client/components/account/PersonalInfoForm"
+import { UpdatePasswordForm } from "~/client/components/account/UpdatePasswordForm"
 import { AppSidebar } from "~/client/components/AppSidebar"
 import {
   Breadcrumb,
@@ -74,7 +75,7 @@ export default function Page() {
         {accountTab === AccountTabsEnum.OVERVIEW && <div>Overview</div>}
         {accountTab === AccountTabsEnum.ANALYSIS && <div>Analysis</div>}
         {accountTab === AccountTabsEnum.PERSONAL_INFO && <PersonalInfoForm user={data} />}
-        {accountTab === AccountTabsEnum.UPDATE_PASSWORD && <div>Update password</div>}
+        {accountTab === AccountTabsEnum.UPDATE_PASSWORD && <UpdatePasswordForm email={userEmail} />}
         {accountTab === AccountTabsEnum.NOTIFICATIONS && <div>Notification</div>}
         {accountTab === AccountTabsEnum.ACCOUNT_DESACTIVATION && <div>Account desactivation</div>}
         {accountTab === AccountTabsEnum.ACCOUNT_DELETION && <div>Delete account</div>}

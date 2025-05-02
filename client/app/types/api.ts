@@ -59,3 +59,10 @@ export type UserDto = {
   twoFactorEnabled?: boolean
   createdAt: Date
 }
+
+export type UpdatePasswordDto = {
+  email: string
+  oldPassword: string
+  newPassword: string
+  confirmPassword: string
+}
