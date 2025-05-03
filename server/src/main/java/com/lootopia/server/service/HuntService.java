@@ -41,8 +41,7 @@ public class HuntService {
 
       huntRepository.save(hunt);
 
-      //            emailService.validateHuntCreationEmail(user.get().getEmail(),
-      // user.get().getUsername(), hunt);
+      emailService.validateHuntCreationEmail(user.get().getEmail(), user.get().getUsername(), hunt);
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
           .body(Map.of("customMessage", "Erreur lors de l'enregistrement de la chasse."));
@@ -73,6 +72,43 @@ public class HuntService {
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
           .body(Map.of("customMessage", "Erreur lors de la récupération de la chasse."));
+    }
+  }
+
+  public ResponseEntity<Map<String, String>> updateHunt(Hunt updatedHunt, String email) {
+    var user = userRepository.findByEmail(email);
+
+    if (user.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+          .body(Map.of("customMessage", "Utilisateur non trouvé."));
+    }
+
+    var existingHuntOpt = huntRepository.findById(updatedHunt.getId());
+
+    if (existingHuntOpt.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND)
+          .body(Map.of("customMessage", "Chasse non trouvée."));
+    }
+
+    try {
+      var existingHunt = existingHuntOpt.get();
+
+      existingHunt.setName(updatedHunt.getName());
+      existingHunt.setSlug(updatedHunt.getSlug());
+      existingHunt.setDescription(updatedHunt.getDescription());
+      existingHunt.setStartDate(updatedHunt.getStartDate());
+      existingHunt.setEndDate(updatedHunt.getEndDate());
+      existingHunt.setLatitude(updatedHunt.getLatitude());
+      existingHunt.setLongitude(updatedHunt.getLongitude());
+      existingHunt.setPrivateHunt(updatedHunt.isPrivateHunt());
+      //      existingHunt.setStatus(updatedHunt.getStatus());
+
+      huntRepository.save(existingHunt);
+
+      return ResponseEntity.ok(Map.of("customMessage", "La chasse a été mise à jour avec succès."));
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body(Map.of("customMessage", "Erreur lors de la mise à jour de la chasse."));
     }
   }
 }

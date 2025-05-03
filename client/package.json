@@ -41,6 +41,7 @@
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.5.2",
     "express": "^4.19.2",
+    "framer-motion": "^12.9.4",
     "input-otp": "^1.4.2",
     "isbot": "^4.1.0",
     "jsonwebtoken": "^9.0.2",

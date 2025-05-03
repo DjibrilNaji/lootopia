@@ -21,3 +21,11 @@ export const getHunt = async (slug: string): Promise<HuntDto> => {
 
   return response.data.data
 }
+
+export const updateHunt = async (huntDto: HuntDto, email: string): Promise<ApiResponse> => {
+  const data = await axiosClient.post(routes.api.hunt.update(email), huntDto, {
+    withCredentials: true
+  })
+
+  return data.data
+}

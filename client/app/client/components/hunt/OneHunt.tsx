@@ -1,5 +1,8 @@
+import { Link } from "@remix-run/react"
+import { Edit } from "lucide-react"
 import { lazy, Suspense } from "react"
 import { useCustomQuery } from "~/client/hook/useCustomMutation"
+import routes from "~/client/routes"
 import { getHunt } from "~/client/services/hunt"
 import CardWrapper from "../CardWrapper"
 import { BackButton } from "../utils/BackButton"
@@ -29,7 +32,12 @@ export function OneHunt({ slug }: OneHuntProps) {
 
   return (
     <div className="mx-auto flex w-full flex-col gap-2 p-6 lg:w-3/4">
-      <BackButton />
+      <div className="flex w-full items-center justify-between">
+        <BackButton />
+        <Link to={routes.hunts.edit(data.slug)}>
+          <Edit className="right-4 top-4 cursor-pointer text-gray-500 hover:text-gray-700" />
+        </Link>
+      </div>
       <h1 className="text-2xl font-bold">{data.name}</h1>
       <p className="text-sm text-gray-500">
         {data.privateHunt ? "Chasse privée" : "Chasse publique"}

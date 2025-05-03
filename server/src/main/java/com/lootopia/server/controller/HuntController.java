@@ -32,4 +32,11 @@ public class HuntController {
   public ResponseEntity<Map<String, Object>> getBySlug(@PathVariable String slug) {
     return huntService.findBySlug(slug);
   }
+
+  @PostMapping("/update")
+  public ResponseEntity<Map<String, String>> updateHunt(
+      @RequestBody HuntDto huntDto, @RequestParam(value = "email") String userEmail) {
+    var hunt = huntMapper.toEntity(huntDto);
+    return huntService.updateHunt(hunt, userEmail);
+  }
 }

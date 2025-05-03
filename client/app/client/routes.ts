@@ -10,7 +10,8 @@ const routes = {
   hunts: {
     create: "/hunts/create",
     list: "/hunts",
-    one: (name: string) => `/hunts/${name}`
+    one: (name: string) => `/hunts/${name}`,
+    edit: (name: string) => `/hunts/edit/${name}`
   },
   img: {
     lootopia: "/img/lootopia.png",
@@ -32,6 +33,7 @@ const routes = {
     contact: "/contact",
     hunt: {
       create: (email: string) => `/hunts/create?email=${email}`,
+      update: (email: string) => `/hunts/update?email=${email}`,
       all: "/hunts",
       one: (slug: string) => `/hunts/${slug}`
     },
