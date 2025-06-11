@@ -10,11 +10,13 @@ import {
 } from "@remix-run/react"
 import { Hydrate, QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+import { jwtDecode } from "jwt-decode"
 import React from "react"
 import { Toaster } from "sonner"
 import { useDehydratedState } from "use-dehydrated-state"
 
 import "./tailwind.css"
+import { UserPayload } from "./types/user"
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -26,6 +28,10 @@ export const links: LinksFunction = () => [
   {
     rel: "stylesheet",
     href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+  },
+  {
+    rel: "stylesheet",
+    href: "https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
   }
 ]
 
@@ -62,23 +68,29 @@ export const loader = async ({ request }: { request: Request }) => {
   const accessToken: string | undefined = cookies["accessToken"]
   const isLoggedIn: boolean = !!accessToken
 
+  let userDecoded: UserPayload | null = null
+
+  if (accessToken) {
+    userDecoded = jwtDecode<UserPayload>(accessToken)
+  }
+
   return data({
     isLoggedIn,
-    user: accessToken ? {} : null
+    user: userDecoded ?? null
   })
 }
 
 export default function App() {
   const [queryClient] = React.useState(() => new QueryClient())
   const dehydratedState = useDehydratedState()
-  const { isLoggedIn } = useLoaderData<typeof loader>()
+  const { isLoggedIn, user } = useLoaderData<typeof loader>()
 
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={dehydratedState}>
         <ReactQueryDevtools initialIsOpen={false} />
         <Toaster richColors position="bottom-right" />
-        <Outlet context={{ isLoggedIn }} />
+        <Outlet context={{ isLoggedIn, user }} />
       </Hydrate>
     </QueryClientProvider>
   )

@@ -1,4 +1,4 @@
-import { Link, useOutletContext, useNavigate } from "@remix-run/react"
+import { Link, NavLink, useNavigate, useOutletContext } from "@remix-run/react"
 import { Book, Menu, Sunset, Trees, Zap } from "lucide-react"
 
 import {
@@ -26,6 +26,7 @@ import {
 } from "~/client/components/ui/sheet"
 import routes from "~/client/routes"
 import { logout } from "~/client/services/auth"
+import { AvatarComponent } from "../AvatarComponent"
 
 interface MenuItem {
   title: string
@@ -162,13 +163,25 @@ export function Navbar({
           </div>
           <div className="flex gap-2">
             {isLoggedIn ? (
-              <Button
-                variant="outline"
-                className="mb-2 me-2 w-full rounded-lg px-5 py-2.5 text-center text-sm font-medium text-black hover:text-gray-400 focus:outline-none focus:ring-4 sm:w-auto"
-                onClick={handleLogout}
-              >
-                Déconnexion
-              </Button>
+              <>
+                <Button
+                  variant="outline"
+                  className="asChild mb-2 me-2 w-full rounded-lg border border-yellow-400 px-5 py-2.5 text-center text-sm font-medium text-yellow-400 hover:bg-yellow-500 hover:text-white focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:border-yellow-300 dark:text-yellow-300 dark:hover:bg-yellow-400 dark:hover:text-white dark:focus:ring-yellow-900 sm:w-auto"
+                >
+                  <Link to={routes.hunts.create}>Créer une chasse</Link>
+                </Button>
+
+                <Button
+                  variant="outline"
+                  className="mb-2 me-2 w-full rounded-lg px-5 py-2.5 text-center text-sm font-medium text-black hover:text-gray-400 focus:outline-none focus:ring-4 sm:w-auto"
+                  onClick={handleLogout}
+                >
+                  Déconnexion
+                </Button>
+                <NavLink to={routes.account}>
+                  <AvatarComponent />
+                </NavLink>
+              </>
             ) : (
               <>
                 <Button
@@ -200,7 +213,7 @@ export function Navbar({
                   <Menu className="size-4" />
                 </Button>
               </SheetTrigger>
-              <SheetContent className="overflow-y-auto">
+              <SheetContent className="flex flex-col overflow-y-auto">
                 <SheetHeader>
                   <SheetTitle>
                     <Link to={routes.home} className="flex items-center gap-2">
@@ -209,6 +222,7 @@ export function Navbar({
                     </Link>
                   </SheetTitle>
                 </SheetHeader>
+
                 <div className="my-6 flex flex-col gap-6">
                   <Accordion type="single" collapsible className="flex w-full flex-col gap-4">
                     {menu.map((item) => renderMobileMenuItem(item))}
@@ -230,13 +244,25 @@ export function Navbar({
                   </div>
                   <div className="flex flex-col gap-3">
                     {isLoggedIn ? (
-                      <Button
-                        variant="outline"
-                        className="mb-2 me-2 w-full rounded-lg px-5 py-2.5 text-center text-sm font-medium text-black hover:text-gray-400 focus:outline-none focus:ring-4 sm:w-auto"
-                        onClick={handleLogout}
-                      >
-                        Déconnexion
-                      </Button>
+                      <>
+                        <SheetClose asChild>
+                          <Button
+                            variant="outline"
+                            className="asChild mb-2 me-2 w-full rounded-lg border border-yellow-400 px-5 py-2.5 text-center text-sm font-medium text-yellow-400 hover:bg-yellow-500 hover:text-white focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:border-yellow-300 dark:text-yellow-300 dark:hover:bg-yellow-400 dark:hover:text-white dark:focus:ring-yellow-900 sm:w-auto"
+                          >
+                            <Link to={routes.hunts.create}>Créer une chasse</Link>
+                          </Button>
+                        </SheetClose>
+                        <SheetClose asChild>
+                          <Button
+                            variant="outline"
+                            className="mb-2 me-2 w-full rounded-lg px-5 py-2.5 text-center text-sm font-medium text-black hover:text-gray-400 focus:outline-none focus:ring-4 sm:w-auto"
+                            onClick={handleLogout}
+                          >
+                            Déconnexion
+                          </Button>
+                        </SheetClose>
+                      </>
                     ) : (
                       <>
                         <Button
@@ -257,6 +283,16 @@ export function Navbar({
                     )}
                   </div>
                 </div>
+
+                <NavLink
+                  to={routes.account}
+                  className="mt-auto flex items-center justify-center gap-2"
+                >
+                  <AvatarComponent />
+                  <div className="flex flex-col gap-0.5 leading-none">
+                    <span className="font-semibold">Djibril Naji</span>
+                  </div>
+                </NavLink>
               </SheetContent>
             </Sheet>
           </div>

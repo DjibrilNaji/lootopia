@@ -8,3 +8,7 @@ export interface User {
   twoFactorEnabled?: boolean
   createdAt: Date
 }
+
+export interface UserPayload {
+  sub: string
+}

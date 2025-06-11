@@ -2,7 +2,14 @@ import { AxiosError } from "axios"
 
 import routes from "~/client/routes"
 import axiosClient from "~/client/utils/axiosInstance"
-import { ApiResponse, RegisterDto, LoginDto, ApiAuthResponse } from "~/types/api"
+import {
+  ApiAuthResponse,
+  ApiResponse,
+  DesactivationRequestDto,
+  LoginDto,
+  RegisterDto,
+  UpdatePasswordDto
+} from "~/types/api"
 
 export const register = async (registerDto: RegisterDto): Promise<ApiResponse> => {
   const data = await axiosClient.post(routes.api.auth.register, registerDto, {
@@ -14,6 +21,36 @@ export const register = async (registerDto: RegisterDto): Promise<ApiResponse> =
 
 export const verifyAccount = async (userEmail: string, activationCode: string) => {
   const data = await axiosClient.get(routes.api.auth.verify(userEmail, activationCode), {
+    withCredentials: true
+  })
+
+  return data.data
+}
+
+export const desactivateAccount = async (
+  desactivationRequestDto: DesactivationRequestDto
+): Promise<ApiResponse> => {
+  const data = await axiosClient.post(routes.api.auth.desactivate, desactivationRequestDto, {
+    withCredentials: true
+  })
+
+  return data.data
+}
+
+export const deleteAccount = async (
+  desactivationRequestDto: DesactivationRequestDto
+): Promise<ApiResponse> => {
+  const data = await axiosClient.post(routes.api.auth.delete, desactivationRequestDto, {
+    withCredentials: true
+  })
+
+  return data.data
+}
+
+export const updatePassword = async (
+  updatePasswordDto: UpdatePasswordDto
+): Promise<ApiResponse> => {
+  const data = await axiosClient.post(routes.api.auth.updatePassword, updatePasswordDto, {
     withCredentials: true
   })
 
@@ -43,7 +80,9 @@ export const login = async (loginDto: LoginDto): Promise<ApiAuthResponse> => {
   }
 }
 
-export const logout = async (): Promise<{ success: boolean; message?: string }> => {
+export const logout = async (
+  otherSearchParam?: string
+): Promise<{ success: boolean; message?: string }> => {
   try {
     await axiosClient.post(
       routes.api.auth.logout,
@@ -63,7 +102,7 @@ export const logout = async (): Promise<{ success: boolean; message?: string }> 
 
     if (typeof window !== "undefined") {
       cleanClient()
-      window.location.href = `${routes.home}?logout=success`
+      window.location.href = `${routes.home}?logout=success${otherSearchParam ? `&${otherSearchParam}` : ""}`
       return { success: true }
     }
 
