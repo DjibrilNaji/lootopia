@@ -7,7 +7,7 @@ interface RegisterFormFieldsProps {
   mutate: (data: SignupType) => void
 }
 
-export function RegisterFormFields({ isPending, mutate }: RegisterFormFieldsProps) {
+export default function RegisterFormFields({ isPending, mutate }: RegisterFormFieldsProps) {
   const {
     control,
     handleSubmit,

@@ -3,3 +3,13 @@ export type SignupType = {
   email: string
   password: string
 }
+
+export type SignInType = {
+  email: string
+  password: string
+}
+
+export type SignInMFAType = {
+  email: string
+  inputCode: string
+}
