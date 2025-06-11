@@ -24,6 +24,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Map;
 import java.util.Optional;
@@ -136,17 +137,17 @@ public class AuthService {
         return userDetailsService.loadUserByUsername(email);
     }
 
-    public ResponseEntity<Map<String, String>> login(LoginDto request, HttpServletResponse response) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginDto request, HttpServletResponse response) {
         try {
             UserDetails userDetails = authenticate(request.getEmail(), request.getPassword());
 
-            if (userDetails instanceof CustomUserDetails customUser &&
-                    customUser.getUser().isTwoFactorEnabled()) {
+            CustomUserDetails customUser = (CustomUserDetails) userDetails;
 
+            if (customUser.getUser().isTwoFactorEnabled()) {
                 twoFactorAuthenticationService.sendVerificationCode(request.getEmail());
                 return ResponseEntity.ok(Map.of(
                         "message", "2FA requis. Un code a été envoyé à votre email.",
-                        "requires2fa", "true"
+                        "requires2fa", true
                 ));
             }
 
@@ -162,12 +163,15 @@ public class AuthService {
 
             response.addHeader(HttpHeaders.SET_COOKIE, accessCookie.toString());
 
-            CustomUserDetails customUser = (CustomUserDetails) userDetails;
+            Map<String, Object> userMap = Map.of(
+                    "username", customUser.getUser().getUsername(),
+                    "email", customUser.getUser().getEmail()
+            );
 
             return ResponseEntity.ok(Map.of(
                     "token", accessToken,
                     "customMessage", "Connexion réussie !",
-                    "user", customUser.getUser().getUsername()
+                    "user", userMap
             ));
 
         } catch (UsernameNotFoundException | BadCredentialsException e) {

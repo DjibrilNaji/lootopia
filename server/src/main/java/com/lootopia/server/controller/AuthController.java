@@ -28,7 +28,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(
+    public ResponseEntity<Map<String, Object>> login(
             @RequestBody LoginDto request,
             HttpServletResponse response
     ) {

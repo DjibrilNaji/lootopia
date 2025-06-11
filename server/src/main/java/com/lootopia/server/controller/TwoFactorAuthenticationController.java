@@ -24,7 +24,7 @@ public class TwoFactorAuthenticationController {
     }
 
     @PostMapping("/verify-code")
-    public ResponseEntity<String> verifyCode(
+    public ResponseEntity<Map<String, Object>> verifyCode(
             @RequestBody Map<String, String> request,
             HttpServletResponse response
     ) {

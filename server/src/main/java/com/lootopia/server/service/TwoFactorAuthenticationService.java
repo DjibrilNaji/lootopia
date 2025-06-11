@@ -63,13 +63,13 @@ public class TwoFactorAuthenticationService {
         }
     }
 
-    public ResponseEntity<String> handleVerifyCode(Map<String, String> request, HttpServletResponse response) {
+    public ResponseEntity<Map<String, Object>> handleVerifyCode(Map<String, String> request, HttpServletResponse response) {
         String email = request.get("email");
         String inputCode = request.get("inputCode");
 
         if (email == null || inputCode == null) {
             return ResponseEntity.badRequest()
-                    .body(Map.of("message", "Les paramètres 'email' et 'inputCode' sont requis.").toString());
+                    .body(Map.of("message", "Les paramètres 'email' et 'inputCode' sont requis."));
         }
 
         boolean isValid = verifyCode(inputCode, email);
@@ -88,13 +88,22 @@ public class TwoFactorAuthenticationService {
 
             response.addHeader(HttpHeaders.SET_COOKIE, accessCookie.toString());
 
+            CustomUserDetails customUser = (CustomUserDetails) userDetails;
+
+            Map<String, Object> userMap = Map.of(
+                    "username", customUser.getUser().getUsername(),
+                    "email", customUser.getUser().getEmail()
+            );
+
             return ResponseEntity.ok(Map.of(
                     "customMessage", "Vérification réussie !",
-                    "user", ((CustomUserDetails) userDetails).getUser().getUsername()
-            ).toString());
+                    "user", userMap,
+                    "token", jwtToken
+            ));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("message", "Code 2FA invalide.").toString());
+                    .body(Map.of("message", "Code 2FA invalide."));
         }
     }
+
 }
