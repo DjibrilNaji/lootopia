@@ -24,8 +24,8 @@ public class HuntController {
   }
 
   @GetMapping
-  public ResponseEntity<Map<String, Object>> all() {
-    return huntService.findAll();
+  public ResponseEntity<Map<String, Object>> all(@RequestParam(required = false) String email) {
+    return huntService.findHunts(email);
   }
 
   @GetMapping("/{slug}")

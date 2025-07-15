@@ -11,4 +11,7 @@ export interface User {
 
 export interface UserPayload {
   sub: string
+  email: string
+  isAdmin: boolean
+  username: string
 }

@@ -8,6 +8,7 @@ import { requireUser } from "~/client/utils/auth"
 
 export const loader = async (args: LoaderFunctionArgs) => {
   const user = await requireUser(args)
+
   return json({ user })
 }
 

@@ -32,6 +32,9 @@ public class User {
   @Column(name = "created_at", nullable = false, updatable = false)
   private LocalDateTime createdAt = LocalDateTime.now();
 
+  @Column(name = "is_admin", nullable = false)
+  private boolean isAdmin = false;
+
   public Long getId() {
     return id;
   }
@@ -96,5 +99,11 @@ public class User {
     this.createdAt = createdAt;
   }
 
-  public void getSlug() {}
+  public boolean isAdmin() {
+    return isAdmin;
+  }
+
+  public void setAdmin(boolean isAdmin) {
+    this.isAdmin = isAdmin;
+  }
 }

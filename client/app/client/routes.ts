@@ -7,9 +7,11 @@ const routes = {
   contact: "/contact",
   profile: "/profile",
   account: "/account",
+  backoffice: "/backoffice",
   hunts: {
     create: "/hunts/create",
     list: "/hunts",
+    myHunts: (username: string) => `/hunts/${username}/list`,
     one: (name: string) => `/hunts/${name}`,
     edit: (name: string) => `/hunts/edit/${name}`
   },
@@ -34,12 +36,15 @@ const routes = {
     hunt: {
       create: (email: string) => `/hunts/create?email=${email}`,
       update: (email: string) => `/hunts/update?email=${email}`,
-      all: "/hunts",
+      all: (email?: string) => `/hunts?email=${email ?? ""}`,
       one: (slug: string) => `/hunts/${slug}`
     },
     user: {
       update: (userId: number) => `/users/${userId}`,
-      one: (email: string) => `/users/${email}`
+      one: (email: string) => `/users/${email}`,
+      delete: (userId: number) => `/users/${userId}`,
+      all: "/users",
+      getAllDataLength: "/users/data-length"
     }
   }
 }

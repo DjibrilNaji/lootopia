@@ -10,8 +10,12 @@ export const createHunt = async (huntDto: HuntDto, email: string): Promise<ApiRe
   return data.data
 }
 
-export const getHunts = async (): Promise<HuntListResponse> => {
-  const response = await axiosClient.get(routes.api.hunt.all, { withCredentials: true })
+export const getHunts = async (email?: string): Promise<HuntListResponse> => {
+  console.log(`Fetching hunts for email: ${email}`)
+
+  const response = await axiosClient.get(routes.api.hunt.all(email), {
+    withCredentials: true
+  })
 
   return response.data
 }

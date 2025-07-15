@@ -77,7 +77,7 @@ public class TwoFactorAuthenticationService {
 
     if (isValid) {
       UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-      String jwtToken = jwtService.generateToken(userDetails);
+      String jwtToken = jwtService.generateToken(userDetails, false, "");
 
       ResponseCookie accessCookie =
           ResponseCookie.from("accessToken", jwtToken)

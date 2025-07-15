@@ -11,3 +11,5 @@ databaseChangeLog:
       file: db/changelog/db.changelog-add-is-draft-hunt.yaml
   - include:
       file: db/changelog/db.changelog-add-slug-hunt.yaml
+  - include:
+        file: db/changelog/db.changelog-add-is-admin-user.yaml

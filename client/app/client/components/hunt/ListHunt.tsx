@@ -9,8 +9,14 @@ import { Button } from "../ui/button"
 import Spinner from "../utils/Spinner"
 import ListHuntItem from "./ListHuntItem"
 
-export default function ListHunt() {
-  const { isLoading, data } = useCustomQuery(["hunts"], getHunts)
+interface ListHuntProps {
+  email?: string
+}
+export default function ListHunt({ email }: ListHuntProps) {
+  const { isLoading, data } = useCustomQuery(["hunts"], () => getHunts(email))
+
+  console.log("ListHunt data:", data)
+
   const [huntsTab, setHuntsTab] = useState<HuntsTabsEnum>(HuntsTabsEnum.HUNT)
 
   const handleTabChange = (tab: HuntsTabsEnum) => setHuntsTab(tab)

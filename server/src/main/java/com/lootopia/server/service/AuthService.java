@@ -189,7 +189,8 @@ public class AuthService {
                 "requires2fa", "true"));
       }
 
-      String accessToken = jwtService.generateToken(userDetails);
+      String accessToken =
+          jwtService.generateToken(userDetails, user.get().isAdmin(), user.get().getUsername());
 
       ResponseCookie accessCookie =
           ResponseCookie.from("accessToken", accessToken)

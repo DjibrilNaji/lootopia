@@ -23,7 +23,7 @@ export default function Page() {
   const { user } = useLoaderData<typeof loader>()
   const userEmail = user.sub
 
-  const [accountTab, setAccountTab] = useState(AccountTabsEnum.OVERVIEW)
+  const [accountTab, setAccountTab] = useState(AccountTabsEnum.PERSONAL_INFO)
 
   const { isLoading, data, error } = useCustomQuery(["hunts", userEmail], () => getUser(userEmail))
 
@@ -57,8 +57,6 @@ export default function Page() {
           </p>
         </header>
 
-        {accountTab === AccountTabsEnum.OVERVIEW && <div>Overview</div>}
-        {accountTab === AccountTabsEnum.ANALYSIS && <div>Analysis</div>}
         {accountTab === AccountTabsEnum.PERSONAL_INFO && <PersonalInfoForm user={data} />}
         {accountTab === AccountTabsEnum.UPDATE_PASSWORD && <UpdatePasswordForm email={userEmail} />}
         {accountTab === AccountTabsEnum.NOTIFICATIONS && <div>Notification</div>}

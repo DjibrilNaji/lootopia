@@ -34,13 +34,7 @@ export function PersonalInfoForm({ user }: PersonalInfoFormProps) {
   })
 
   const { isLoading, mutate } = useCustomMutation(
-    async (values: UpdateUserType) => await update(user.id, values),
-    {
-      onSuccess: async (data) => {
-        toast.success(data.customMessage)
-        await logout("updateEmail=success")
-      }
-    }
+    async (values: UpdateUserType) => await update(user.id, values)
   )
 
   const handleSubmit = async (values: UpdateUserType) => {
@@ -48,8 +42,16 @@ export function PersonalInfoForm({ user }: PersonalInfoFormProps) {
       toast.error("Aucune modification n'a été apportée.")
       return
     }
+    const emailChanged = values.email !== user.email
 
-    mutate(values)
+    mutate(values, {
+      onSuccess: async (data) => {
+        toast.success(data.customMessage)
+        if (emailChanged) {
+          await logout("updateEmail=success")
+        }
+      }
+    })
   }
 
   return (

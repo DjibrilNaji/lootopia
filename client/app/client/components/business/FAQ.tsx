@@ -8,6 +8,7 @@ import {
 } from "~/client/components/ui/accordion"
 import { Avatar, AvatarFallback, AvatarImage } from "~/client/components/ui/avatar"
 import { Button } from "~/client/components/ui/button"
+import routes from "~/client/routes"
 
 interface FaqItem {
   id: string
@@ -101,9 +102,7 @@ export function Faq({ items = faqItems }: FaqProps) {
           </p>
           <div className="flex w-full flex-col justify-center gap-2 sm:flex-row">
             <Button className="w-full bg-amber-400 text-white hover:bg-amber-500 sm:w-auto">
-              <Link to="#" target="_blank">
-                Contacter le Support
-              </Link>
+              <Link to={routes.contact}>Contacter le Support</Link>
             </Button>
           </div>
         </div>

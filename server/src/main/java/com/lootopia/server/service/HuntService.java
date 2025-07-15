@@ -4,7 +4,9 @@ import com.lootopia.server.entity.Hunt;
 import com.lootopia.server.mapper.HuntMapper;
 import com.lootopia.server.repository.HuntRepository;
 import com.lootopia.server.repository.UserRepository;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,11 +57,24 @@ public class HuntService {
             "customMessage", "La chasse a été créée avec succès et un email vous a été envoyé."));
   }
 
-  public ResponseEntity<Map<String, Object>> findAll() {
+  public ResponseEntity<Map<String, Object>> findHunts(String email) {
     try {
-      var hunts = huntRepository.findAll();
-      return ResponseEntity.ok(Map.of("count", hunts.size(), "data", hunts));
+      Optional<List<Hunt>> hunts;
+
+      if (email != null && !email.trim().isEmpty()) {
+        var userOpt = userRepository.findByEmail(email);
+        if (userOpt.isEmpty()) {
+          return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+              .body(Map.of("customMessage", "Utilisateur non trouvé."));
+        }
+        hunts = huntRepository.findByCreatedBy(userOpt.get().getId());
+      } else {
+        hunts = Optional.of(huntRepository.findAll());
+      }
+
+      return ResponseEntity.ok(Map.of("data", hunts));
     } catch (Exception e) {
+        e.printStackTrace();
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
           .body(Map.of("customMessage", "Erreur lors de la récupération des chasses."));
     }
