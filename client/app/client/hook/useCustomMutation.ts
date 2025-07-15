@@ -10,7 +10,7 @@ export function useCustomMutation<TData, TVariables>(
   return useMutation<TData, ApiError, TVariables>({
     mutationFn,
     onError: (error: ApiError, variables, context) => {
-      let errorMessage = "Une erreur inattendue est survenue."
+      let errorMessage = "Un utilisateur avec le même nom d'utilisateur existe déjà."
 
       if (error.response?.data?.customMessage) {
         errorMessage = error.response.data.customMessage

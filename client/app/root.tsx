@@ -76,21 +76,23 @@ export const loader = async ({ request }: { request: Request }) => {
 
   return data({
     isLoggedIn,
-    user: userDecoded ?? null
+    user: userDecoded ?? null,
+    isAdmin: userDecoded?.isAdmin ?? false,
+    username: userDecoded?.username ?? ""
   })
 }
 
 export default function App() {
   const [queryClient] = React.useState(() => new QueryClient())
   const dehydratedState = useDehydratedState()
-  const { isLoggedIn, user } = useLoaderData<typeof loader>()
+  const { isLoggedIn, user, isAdmin } = useLoaderData<typeof loader>()
 
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={dehydratedState}>
         <ReactQueryDevtools initialIsOpen={false} />
         <Toaster richColors position="bottom-right" />
-        <Outlet context={{ isLoggedIn, user }} />
+        <Outlet context={{ isLoggedIn, user, isAdmin }} />
       </Hydrate>
     </QueryClientProvider>
   )
