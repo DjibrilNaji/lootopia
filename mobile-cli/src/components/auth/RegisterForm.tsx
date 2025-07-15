@@ -1,7 +1,9 @@
 import { StyleSheet, Text, View } from "react-native"
+import React from "react"
 
 import useRegister from "@/src/client/hook/useRegister"
 import { RegisterFormFields } from "@/src/components/auth/RegisterFormFields"
+
 
 export function RegisterForm() {
   const { mutate, isPending, successMessage, apiError } = useRegister()

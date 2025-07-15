@@ -101,7 +101,7 @@ export function Faq({ items = faqItems }: FaqProps) {
           </p>
           <div className="flex w-full flex-col justify-center gap-2 sm:flex-row">
             <Button className="w-full bg-amber-400 text-white hover:bg-amber-500 sm:w-auto">
-              <Link to="#" target="_blank">
+              <Link to="/contact">
                 Contacter le Support
               </Link>
             </Button>

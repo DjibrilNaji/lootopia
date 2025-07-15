@@ -12,6 +12,16 @@ const routes = {
     list: "/hunts",
     one: (name: string) => `/hunts/${name}`
   },
+  artifacts: {
+    list: "/artifacts",
+    one: (slug: string) => `/artifacts/${slug}`,
+    create: "/artifacts/create",
+    edit: (slug: string) => `/artifacts/${slug}/edit`
+  },
+  marketplace: {
+    list: "/marketplace",
+    one: (slug: string) => `/marketplace/${slug}`
+  },
   img: {
     lootopia: "/img/lootopia.png",
     notFound: "/img/404.png",

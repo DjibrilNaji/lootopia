@@ -1,5 +1,5 @@
 import { Link, NavLink, useNavigate, useOutletContext } from "@remix-run/react"
-import { Book, Menu, Sunset, Trees, Zap } from "lucide-react"
+import { Book, Menu, Sunset, Trees, Zap, ShoppingCart, Plus } from "lucide-react"
 
 import {
   Accordion,
@@ -27,6 +27,7 @@ import {
 import routes from "~/client/routes"
 import { logout } from "~/client/services/auth"
 import { AvatarComponent } from "../AvatarComponent"
+import { CrownBalance } from "./crown-balance"
 
 interface MenuItem {
   title: string
@@ -161,9 +162,20 @@ export function Navbar({
               </NavigationMenu>
             </div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
             {isLoggedIn ? (
               <>
+                <CrownBalance initialBalance={1500} />
+                <Button
+                asChild
+                size="sm"
+                className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white shadow-md hover:shadow-lg transition-all duration-300 h-10 w-10 p-0 hover:scale-110"
+                title="Acheter des Couronnes"
+              >
+                <Link to="/shop">
+                  <Plus className="h-5 w-5" />
+                </Link>
+              </Button>
                 <Button
                   variant="outline"
                   className="asChild mb-2 me-2 w-full rounded-lg border border-yellow-400 px-5 py-2.5 text-center text-sm font-medium text-yellow-400 hover:bg-yellow-500 hover:text-white focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:border-yellow-300 dark:text-yellow-300 dark:hover:bg-yellow-400 dark:hover:text-white dark:focus:ring-yellow-900 sm:w-auto"
@@ -252,6 +264,17 @@ export function Navbar({
                           >
                             <Link to={routes.hunts.create}>Créer une chasse</Link>
                           </Button>
+                        </SheetClose>
+                        <SheetClose asChild>
+                          <Link to={routes.marketplace.list}>
+                            <Button
+                              variant="outline"
+                              className="mb-2 me-2 w-full rounded-lg px-5 py-2.5 text-center text-sm font-medium text-black hover:text-yellow-500 focus:outline-none focus:ring-4 sm:w-auto"
+                            >
+                              <ShoppingCart className="mr-2 size-4" />
+                              Marketplace
+                            </Button>
+                          </Link>
                         </SheetClose>
                         <SheetClose asChild>
                           <Button

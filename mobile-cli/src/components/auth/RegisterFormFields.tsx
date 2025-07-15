@@ -1,4 +1,5 @@
 import { SignupType } from "@/src/types/form"
+import React from "react"
 import { Controller, useForm } from "react-hook-form"
 import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from "react-native"
 
