@@ -52,11 +52,11 @@ Vous pouvez importer le backend dans IntelliJ IDEA en tant que projet Maven.
 
 Voici la configuration Maven à utiliser :
 
-![IntelliJ clean install](/public/img/clean-install.png)
+![IntelliJ clean install](/img/clean-install.png)
 
 Ensuite, pour lancer le backend, voici la configuration de l'API à utiliser :
 
-![IntelliJ API config](/public/img/api-config.png)
+![IntelliJ API config](/img/api-config.png)
 
 ## Lancer l'application web (client-web)
 
