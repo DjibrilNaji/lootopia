@@ -4,6 +4,8 @@ spring:
   datasource:
     url: ${DATASOURCE_URL}
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    username:
+    password:
   security:
     user:
       name: ${SECURITY_NAME}
@@ -20,6 +22,8 @@ spring:
       methods: ${CORS_METHODS}
       headers: ${CORS_HEADERS}
       credentials: ${CORS_CREDENTIALS}
+  jwt:
+    secret:
   mail:
     host: smtp.gmail.com
     port: 587
