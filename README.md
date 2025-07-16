@@ -71,3 +71,50 @@ npm run dev
 L’application web sera disponible à l’adresse suivante : `http://localhost:3000`
 
 ## Lancer l’application mobile (client-mobile)
+
+L'application fonctionne avec **React Native + Expo** (en mode natif). Pour  tester sur **un iPhone**, voici les étapes :
+
+### 1. Brancher un iPhone en USB
+
+L’iPhone doit être :
+- Déverrouillé
+- Connecté &u Mac
+- Autorisé (cliquer sur “faire confiance”)
+
+### 2. Installer les dépendances
+
+```bash
+yarn install
+ou
+
+npm install
+```
+### 3. Installer les pods iOS
+
+```bash
+cd ios
+pod install
+cd ..
+```
+### 4. Lancer l'app sur l'iPhone
+
+```bash
+npx expo run:ios --device
+```
+### Connexion au backend (API)
+
+Le frontend utilise une variable d’environnement pour appeler l’API :
+
+```bash
+baseURL: process.env.EXPO_PUBLIC_API_URL
+```
+Dans un fichier .env, ajoute par exemple :
+
+```bash
+EXPO_PUBLIC_API_URL=http://192.168.1.xx:8080/api
+```
+Remplacer l’adresse IP par celle de ton ordi (et assurez-vous que le mobile et l'ordinateur  soit sur le même réseau Wi-Fi)
+
+
+
+
