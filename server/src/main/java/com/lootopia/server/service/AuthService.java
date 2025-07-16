@@ -30,6 +30,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class AuthService {
@@ -169,59 +170,64 @@ public class AuthService {
     return userDetailsService.loadUserByUsername(email);
   }
 
-  public ResponseEntity<Map<String, String>> login(LoginDto request, HttpServletResponse response) {
-    try {
-      var user = userRepository.findByEmail(request.getEmail());
+public ResponseEntity<Map<String, Object>> login(LoginDto request, HttpServletResponse response) {
+        try {
+            var user = userRepository.findByEmail(request.getEmail());
 
-      if (user.isPresent() && !user.get().isActive()) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-            .body(Map.of("message", "Compte non activé. Vérifiez votre email."));
-      }
-      UserDetails userDetails = authenticate(request.getEmail(), request.getPassword());
+            if (user.isPresent() && !user.get().isActive()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(Map.of("message", "Compte non activé. Vérifiez votre email."));
+            }
+            UserDetails userDetails = authenticate(request.getEmail(), request.getPassword());
 
-      if (userDetails instanceof CustomUserDetails customUser
-          && customUser.getUser().isTwoFactorEnabled()) {
+            if (userDetails instanceof CustomUserDetails customUser
+                    && customUser.getUser().isTwoFactorEnabled()) {
 
-        twoFactorAuthenticationService.sendVerificationCode(request.getEmail());
-        return ResponseEntity.ok(
-            Map.of(
-                "message", "2FA requis. Un code a été envoyé à votre email.",
-                "requires2fa", "true"));
-      }
+                twoFactorAuthenticationService.sendVerificationCode(request.getEmail());
+                return ResponseEntity.ok(
+                        Map.of(
+                                "message", "2FA requis. Un code a été envoyé à votre email.",
+                                "requires2fa", true 
+                        ));
+            }
 
-      String accessToken =
-          jwtService.generateToken(userDetails, user.get().isAdmin(), user.get().getUsername());
+            String accessToken = jwtService.generateToken(userDetails);
 
-      ResponseCookie accessCookie =
-          ResponseCookie.from("accessToken", accessToken)
-              .httpOnly(true)
-              .secure(true)
-              .path("/")
-              .maxAge(7 * 24 * 60 * 60)
-              .sameSite("Strict")
-              .build();
+            ResponseCookie accessCookie =
+                    ResponseCookie.from("accessToken", accessToken)
+                            .httpOnly(true)
+                            .secure(true)
+                            .path("/")
+                            .maxAge(7 * 24 * 60 * 60)
+                            .sameSite("Strict")
+                            .build();
 
-      response.addHeader(HttpHeaders.SET_COOKIE, accessCookie.toString());
+            response.addHeader(HttpHeaders.SET_COOKIE, accessCookie.toString());
 
-      CustomUserDetails customUser = (CustomUserDetails) userDetails;
+            CustomUserDetails customUser = (CustomUserDetails) userDetails;
 
-      return ResponseEntity.ok(
-          Map.of(
-              "token",
-              accessToken,
-              "customMessage",
-              "Connexion réussie !",
-              "user",
-              customUser.getUser().getUsername()));
+            Map<String, Object> userMap = Map.of(
+                    "username", customUser.getUser().getUsername(),
+                    "email", customUser.getUser().getEmail()
+            );
 
-    } catch (UsernameNotFoundException | BadCredentialsException e) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-          .body(Map.of("message", "Identifiants invalides."));
-    } catch (MessagingException e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-          .body(Map.of("message", "Échec de l'envoi du code 2FA."));
+            return ResponseEntity.ok(
+                    Map.of(
+                            "token", accessToken,
+                            "customMessage", "Connexion réussie !",
+                            "user", userMap
+                    )
+            );
+
+        } catch (UsernameNotFoundException | BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "Identifiants invalides."));
+        } catch (MessagingException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "Échec de l'envoi du code 2FA."));
+        }
     }
-  }
+   
 
   public ResponseEntity<Map<String, String>> logout(
       HttpServletRequest request, HttpServletResponse response) {
@@ -245,6 +251,7 @@ public class AuthService {
                 "success", "true",
                 "message", "Déconnexion effectuée"));
   }
+
 
   public ResponseEntity<Map<String, String>> updatePassword(UpdatePasswordDto updatePasswordDto) {
     try {

@@ -5,5 +5,6 @@ export interface User {
   passwordHash: string
   isActive: boolean
   activationCode: string
+  twoFactorEnabled?: boolean
   createdAt: Date
 }

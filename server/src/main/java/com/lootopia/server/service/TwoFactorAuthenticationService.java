@@ -73,33 +73,47 @@ public class TwoFactorAuthenticationService {
           .body(Map.of("message", "Les paramètres 'email' et 'inputCode' sont requis.").toString());
     }
 
-    boolean isValid = verifyCode(inputCode, email);
+    public ResponseEntity<Map<String, Object>> handleVerifyCode(Map<String, String> request, HttpServletResponse response) {
+        String email = request.get("email");
+        String inputCode = request.get("inputCode");
 
-    if (isValid) {
-      UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-      String jwtToken = jwtService.generateToken(userDetails, false, "");
+        if (email == null || inputCode == null) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", "Les paramètres 'email' et 'inputCode' sont requis."));
+        }
 
-      ResponseCookie accessCookie =
-          ResponseCookie.from("accessToken", jwtToken)
-              .httpOnly(true)
-              .secure(true)
-              .path("/")
-              .maxAge(7 * 24 * 60 * 60)
-              .sameSite("Strict")
-              .build();
+        boolean isValid = verifyCode(inputCode, email);
 
-      response.addHeader(HttpHeaders.SET_COOKIE, accessCookie.toString());
+        if (isValid) {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+            String jwtToken = jwtService.generateToken(userDetails);
 
-      return ResponseEntity.ok(
-          Map.of(
-                  "customMessage",
-                  "Vérification réussie !",
-                  "user",
-                  ((CustomUserDetails) userDetails).getUser().getUsername())
-              .toString());
-    } else {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-          .body(Map.of("message", "Code 2FA invalide.").toString());
+            ResponseCookie accessCookie = ResponseCookie.from("accessToken", jwtToken)
+                    .httpOnly(true)
+                    .secure(true)
+                    .path("/")
+                    .maxAge(7 * 24 * 60 * 60)
+                    .sameSite("Strict")
+                    .build();
+
+            response.addHeader(HttpHeaders.SET_COOKIE, accessCookie.toString());
+
+            CustomUserDetails customUser = (CustomUserDetails) userDetails;
+
+            Map<String, Object> userMap = Map.of(
+                    "username", customUser.getUser().getUsername(),
+                    "email", customUser.getUser().getEmail()
+            );
+
+            return ResponseEntity.ok(Map.of(
+                    "customMessage", "Vérification réussie !",
+                    "user", userMap,
+                    "token", jwtToken
+            ));
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "Code 2FA invalide."));
+        }
     }
-  }
+
 }

@@ -22,9 +22,11 @@ public class TwoFactorAuthenticationController {
     return twoFactorAuthenticationService.handleSendCode(request);
   }
 
-  @PostMapping("/verify-code")
-  public ResponseEntity<String> verifyCode(
-      @RequestBody Map<String, String> request, HttpServletResponse response) {
-    return twoFactorAuthenticationService.handleVerifyCode(request, response);
-  }
+    @PostMapping("/verify-code")
+    public ResponseEntity<Map<String, Object>> verifyCode(
+            @RequestBody Map<String, String> request,
+            HttpServletResponse response
+    ) {
+        return twoFactorAuthenticationService.handleVerifyCode(request, response);
+    }
 }
