@@ -26,12 +26,24 @@ export type RegisterDto = {
   password: string
 }
 
-export type ContactDto = {
+export type ContactFormType = {
   name: string
   email: string
   subject: string
   message: string
 }
+
+export type ContactDto = {
+  id: number
+  name: string
+  email: string
+  subject: string
+  message: string
+  status: "PENDING" | "RESOLVED"
+  createdAt: Date
+}
+
+export type ContactListResponse = ApiListResponse<ContactDto>
 
 export type LoginDto = {
   email: string
@@ -55,8 +67,9 @@ export type UserDto = {
   id: number
   username: string
   email: string
-  isActive: boolean
+  active: boolean
   twoFactorEnabled?: boolean
+  admin: boolean
   createdAt: Date
 }
 
@@ -70,4 +83,10 @@ export type UpdatePasswordDto = {
 export type DesactivationRequestDto = {
   email: string
   password: string
+}
+
+export type AllDataLengthDto = {
+  users: number
+  hunts: number
+  contacts: number
 }

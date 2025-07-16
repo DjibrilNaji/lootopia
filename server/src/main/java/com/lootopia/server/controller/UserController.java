@@ -25,4 +25,19 @@ public class UserController {
       throws MessagingException {
     return userService.findByEmail(email);
   }
+
+  @GetMapping
+  public ResponseEntity<Map<String, Object>> getAll() throws MessagingException {
+    return userService.findAll();
+  }
+
+  @GetMapping("/data-length")
+  public ResponseEntity<Map<String, Object>> getAllDataLength() {
+    return userService.getAllDataLength();
+  }
+
+  @DeleteMapping("/{userId}")
+  public ResponseEntity<Map<String, String>> delete(@PathVariable Long userId) {
+    return userService.delete(userId);
+  }
 }

@@ -28,11 +28,22 @@ public class ContactService {
       contactRepository.save(contact);
       emailService.validateContactEmail(contact.getEmail(), contact);
     } catch (Exception e) {
+      e.printStackTrace();
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
           .body(Map.of("customMessage", "Erreur lors de l'enregistrement de l'utilisateur."));
     }
 
     return ResponseEntity.status(HttpStatus.OK)
         .body(Map.of("customMessage", "Message envoyé avec succès."));
+  }
+
+  public ResponseEntity<Map<String, Object>> findAll() {
+    try {
+      var contacts = contactRepository.findAll();
+      return ResponseEntity.ok(Map.of("count", contacts.size(), "data", contacts));
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body(Map.of("customMessage", "Erreur lors de la récupération des chasses."));
+    }
   }
 }

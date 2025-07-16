@@ -11,9 +11,17 @@ interface ListHuntItemProps {
 export default function ListHuntItem({ huntTab, hunts }: ListHuntItemProps) {
   return (
     <>
-      <h1 className="text-center text-3xl font-bold text-gray-800">
-        {huntTab === HuntsTabsEnum.HUNT ? "Mes chasses" : "Mes brouillons"}
-      </h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-center text-3xl font-bold text-gray-800">
+          {huntTab === HuntsTabsEnum.HUNT ? "Mes chasses" : "Mes brouillons"}
+        </h1>
+        <Link
+          to={routes.hunts.create}
+          className="rounded-full bg-brown px-6 py-1 font-semibold text-white hover:bg-yellow-700"
+        >
+          Créer une chasse
+        </Link>
+      </div>
 
       {hunts.length > 0 ? (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">

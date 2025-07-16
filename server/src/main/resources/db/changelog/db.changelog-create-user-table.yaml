@@ -39,10 +39,16 @@ databaseChangeLog:
                   name: activation_code
                   type: varchar(255)
                   constraints:
-                    unique: true
                     nullable: true
               - column:
                   name: created_at
                   type: timestamp
                   constraints:
                     nullable: false
+        - sql:
+            dbms: mssql
+            splitStatements: false
+            sql: |
+              CREATE UNIQUE INDEX UX_users_activation_code
+              ON dbo.users (activation_code)
+              WHERE activation_code IS NOT NULL;

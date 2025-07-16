@@ -4,13 +4,14 @@ public class UserDto {
   private Long id;
   private String username;
   private String email;
+  private Boolean isAdmin;
 
-  public String getEmail() {
-    return email;
+  public Long getId() {
+    return id;
   }
 
-  public void setEmail(String email) {
-    this.email = email;
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public String getUsername() {
@@ -21,11 +22,19 @@ public class UserDto {
     this.username = username;
   }
 
-  public Long getId() {
-    return id;
+  public String getEmail() {
+    return email;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public Boolean getAdmin() {
+    return isAdmin;
+  }
+
+  public void setAdmin(Boolean admin) {
+    isAdmin = admin;
   }
 }

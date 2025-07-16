@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2025053-add-is-admin-user
+      author: Djibril
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: is_admin
+                  type: boolean
+                  constraints:
+                    nullable: false

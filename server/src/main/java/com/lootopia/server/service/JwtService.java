@@ -29,13 +29,16 @@ public class JwtService {
     return claimsResolver.apply(claims);
   }
 
-  public String generateToken(UserDetails userDetails) {
-    return generateToken(new HashMap<>(), userDetails);
+  public String generateToken(UserDetails userDetails, Boolean isAdmin, String username) {
+    return generateToken(new HashMap<>(), userDetails, isAdmin, username);
   }
 
-  public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+  public String generateToken(
+      Map<String, Object> extraClaims, UserDetails userDetails, Boolean isAdmin, String username) {
     return Jwts.builder()
         .claims(extraClaims)
+        .claim("isAdmin", isAdmin)
+        .claim("username", username)
         .subject(userDetails.getUsername())
         .issuedAt(new Date(System.currentTimeMillis()))
         .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
