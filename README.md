@@ -1,66 +1,66 @@
-# Lootopia — Guide de démarrage
+# Lootopia — Getting Started Guide
 
-## 📦 Prérequis
+## 📦 Prerequisites
 
-Avant de commencer, assure‑toi d’avoir installé :
+Before getting started, make sure you have installed:
 
-- [Node.js](https://nodejs.org/) (version 18 ou plus)
+- [Node.js](https://nodejs.org/) (version 18 or higher)
 - [Java JDK](https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html) (version 21)
-- [Maven](https://maven.apache.org/) (version 3.9 ou plus)
+- [Maven](https://maven.apache.org/) (version 3.9 or higher)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
-- [IntelliJ IDEA](https://www.jetbrains.com/idea/) (optionnel mais recommandé pour le backend)
-- [Xcode](https://developer.apple.com/xcode/) (nécessaire uniquement pour tester l’application iOS)
+- [IntelliJ IDEA](https://www.jetbrains.com/idea/) (optional but recommended for the backend)
+- [Xcode](https://developer.apple.com/xcode/) (only required to test the iOS app)
 
 ---
 
-## 🚀 Mise en route
+## 🚀 Getting Started
 
-### Cloner le dépôt
+### Clone the repository
 
 ```bash
 git clone https://github.com/ton-org/lootopia.git
 cd lootopia
-```
+```  
 
-## Démarrer la base de données (SQL Server)
+## Start the database (SQL Server)
 
-Assurez-vous que Docker fonctionne. À la racine du projet, exécutez :
+Make sure Docker is running. At the root of the project, run:
 
 ```bash
 docker compose up -d
 ```
 
-Cela va démarrer un conteneur SQL Server avec les ports correctement exposés.
+This will start a SQL Server container with the correct ports exposed.
 
-> ⚠️ Si la base lootopia n'existe pas encore, pensez à la créer manuellement via un outil comme DBeaver, Azure Data Studio, etc..
+> ⚠️ If the lootopia database doesn’t exist yet, remember to create it manually using a tool like DBeaver, Azure Data Studio, etc.
 
-## Lancer le backend (Spring Boot)
+## Run the backend (Spring Boot)
 
-Dans le dossier `server/src/main/resources`, créez un fichier `application-local.yml` à partir du modèle `application-local.example.yml`.
+In the folder `server/src/main/resources`, create a file named `application-local.yml` based on the template `application-local.example.yml`.
 
-Ensuite, remplissez les informations sensibles :
+Then, fill in the sensitive information:
 
-- Connexion base de données
+- Database connection
 
-- Clé secrète JWT
+- JWT secret key
 
-> 🔐 Ces valeurs ne sont pas présentes dans le dépôt pour des raisons de sécurité.
+> 🔐 These values are not included in the repository for security reasons.
 
-### Démarrer le backend
+### Start the backend
 
-Vous pouvez importer le backend dans IntelliJ IDEA en tant que projet Maven.
+You can import the backend into IntelliJ IDEA as a Maven project.
 
-Voici la configuration Maven à utiliser :
+Here’s the Maven configuration to use:
 
 ![IntelliJ clean install](/img/clean-install.png)
 
-Ensuite, pour lancer le backend, voici la configuration de l'API à utiliser :
+Then, to start the backend, use the following API configuration:
 
 ![IntelliJ API config](/img/api-config.png)
 
-## Lancer l'application web (client-web)
+## Run the web application (client-web)
 
-### Démarrage
+### Start
 
 ```bash
 cd client
@@ -68,20 +68,20 @@ npm install
 npm run dev
 ```
 
-L’application web sera disponible à l’adresse suivante : `http://localhost:3000`
+The web app will be available at: `http://localhost:3000`
 
-## Lancer l’application mobile (client-mobile)
+## Run the mobile application (client-mobile)
 
-L'application fonctionne avec **React Native + Expo** (en mode natif). Pour  tester sur **un iPhone**, voici les étapes :
+The app uses **React Native + Expo** (in native mode). To test on **un iPhone**, follow these steps:
 
-### 1. Brancher un iPhone en USB
+### 1. Plug in an iPhone via USB
 
-L’iPhone doit être :
-- Déverrouillé
-- Connecté &u Mac
-- Autorisé (cliquer sur “faire confiance”)
+The iPhone must be:
+- Unlocked
+- Connected to your Mac
+- Trusted (tap “Trust” on the device)
 
-### 2. Installer les dépendances
+### 2. Install dependencies
 
 ```bash
 yarn install
@@ -89,32 +89,34 @@ ou
 
 npm install
 ```
-### 3. Installer les pods iOS
+### 3. Install iOS pods
 
 ```bash
 cd ios
 pod install
 cd ..
 ```
-### 4. Lancer l'app sur l'iPhone
+### 4. Launch the app on the iPhone
 
 ```bash
 npx expo run:ios --device
 ```
-### Connexion au backend (API)
 
-Le frontend utilise une variable d’environnement pour appeler l’API :
+### Connect to the backend (API)
+
+The frontend uses an environment variable to call the API:
 
 ```bash
 baseURL: process.env.EXPO_PUBLIC_API_URL
 ```
-Dans un fichier .env, ajoute par exemple :
+
+In a .env file, for example, add:
 
 ```bash
 EXPO_PUBLIC_API_URL=http://192.168.1.xx:8080/api
 ```
-Remplacer l’adresse IP par celle de ton ordi (et assurez-vous que le mobile et l'ordinateur  soit sur le même réseau Wi-Fi)
 
+Replace the IP address with your computer’s IP address (and make sure the mobile device and computer are on the same Wi-Fi network).
 
 
 
